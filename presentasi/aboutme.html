@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Efendi Hariyadi | FenDoz — About Me</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#000000;
+    --bg-panel:#0c0c0c;
+    --panel-border: rgba(255,255,255,0.08);
+    --white:#ffffff;
+    --dim: rgba(255,255,255,0.55);
+    --dimmer: rgba(255,255,255,0.32);
+    --neon:#39FF14;
+    --blue:#00E5FF;
+    --neon-dim: rgba(57,255,20,0.14);
+    --blue-dim: rgba(0,229,255,0.14);
+    --font-display:'Space Grotesk', sans-serif;
+    --font-mono:'JetBrains Mono', monospace;
+  }
+  *{box-sizing:border-box;}
+  html,body{
+    margin:0; padding:0; min-height:100%;
+    background:var(--bg);
+    color:var(--white);
+    font-family:var(--font-display);
+  }
+  body{
+    background:
+      radial-gradient(circle at 15% 20%, rgba(0,229,255,0.06), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(57,255,20,0.06), transparent 40%),
+      var(--bg);
+  }
+  canvas#bgcanvas{
+    position:fixed; inset:0; width:100%; height:100%; z-index:0; opacity:0.45; pointer-events:none;
+  }
+  .noise-overlay{
+    position:fixed; inset:0; z-index:1; pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+  }
+  .container{
+    position:relative; z-index:2;
+    max-width:900px; margin:0 auto; padding:40px 24px 80px;
+  }
+
+  /* ─── Top bar ─── */
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    max-width:900px; margin:0 auto; padding:18px 24px;
+    border-bottom:1px solid var(--panel-border);
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:var(--font-mono); font-size:13px; letter-spacing:0.14em; text-transform:uppercase;
+    color:var(--dim);
+  }
+  .brand .dot{
+    width:8px;height:8px;border-radius:50%;
+    background:var(--neon);
+    box-shadow:0 0 8px var(--neon), 0 0 16px var(--neon);
+    animation:pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.35;}}
+  .topbar a{
+    font-family:var(--font-mono); font-size:12px; color:var(--dim);
+    text-decoration:none; border:1px solid var(--panel-border);
+    padding:8px 16px; border-radius:8px;
+    transition:all .25s ease; display:flex; align-items:center; gap:6px;
+  }
+  .topbar a:hover{
+    border-color:var(--blue); color:var(--white);
+    box-shadow:0 0 16px rgba(0,229,255,0.15);
+  }
+
+  /* ─── Hero ─── */
+  .hero{
+    display:flex; align-items:center; gap:32px;
+    padding:48px 0 40px;
+    flex-wrap:wrap;
+  }
+  @media(max-width:640px){.hero{justify-content:center;text-align:center;gap:20px;}}
+  .hero-avatar-ring{
+    width:120px;height:120px;border-radius:50%;padding:4px;flex-shrink:0;
+    background:linear-gradient(135deg,var(--neon),var(--blue));
+    box-shadow:0 0 30px rgba(57,255,20,0.2),0 0 60px rgba(0,229,255,0.1);
+    animation:avatar-hue 8s linear infinite;
+  }
+  @keyframes avatar-hue{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+  .hero-avatar{
+    width:100%;height:100%;border-radius:50%;
+    object-fit:cover;display:block;
+    border:3px solid var(--bg);
+  }
+  .hero h1{
+    font-size:clamp(28px,4vw,40px); font-weight:700; margin:0 0 4px 0;
+    letter-spacing:-0.02em;
+  }
+  .hero .grad{background:linear-gradient(90deg,var(--neon),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .hero .role{
+    font-size:16px; color:var(--dim); margin:0;
+  }
+  .hero .meta{
+    font-family:var(--font-mono); font-size:13px; color:var(--dimmer);
+    display:flex; gap:16px; flex-wrap:wrap; margin-top:8px;
+  }
+  @media(max-width:640px){.hero .meta{justify-content:center;}}
+  .hero .meta span{display:flex;align-items:center;gap:5px;}
+
+  /* ─── Cards ─── */
+  .card{
+    border:1px solid var(--panel-border); border-radius:18px;
+    padding:30px 32px; margin-bottom:24px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0));
+    transition:border-color .3s ease;
+  }
+  .card:hover{border-color:rgba(0,229,255,0.12);}
+  .card-title{
+    font-size:14px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--blue); margin-bottom:14px; display:flex; align-items:center; gap:10px;
+  }
+  .card-title::before{content:'';width:16px;height:1.5px;background:var(--blue);}
+
+  /* ─── About text ─── */
+  .about-text{
+    font-size:16px; color:var(--dim); line-height:1.75; margin:0;
+  }
+
+  /* ─── Skills ─── */
+  .skills-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:10px;
+  }
+  .skill-chip{
+    font-family:var(--font-mono); font-size:12px; color:var(--dim);
+    padding:9px 14px; border-radius:10px;
+    background:rgba(255,255,255,0.02); border:1px solid var(--panel-border);
+    transition:all .25s ease;
+  }
+  .skill-chip:hover{
+    border-color:rgba(57,255,20,0.25); color:var(--white);
+    box-shadow:0 0 12px rgba(57,255,20,0.04);
+  }
+  .skill-chip .hl{color:var(--blue);font-weight:600;}
+
+  /* ─── Experience ─── */
+  .exp-item{
+    display:flex; gap:14px; padding:14px 0;
+    border-bottom:1px solid rgba(255,255,255,0.04);
+  }
+  .exp-item:last-child{border-bottom:none;}
+  .exp-dot{
+    flex-shrink:0; width:10px;height:10px;border-radius:50%;margin-top:6px;
+    background:var(--neon);box-shadow:0 0 8px rgba(57,255,20,0.3);
+  }
+  .exp-text{
+    font-size:14.5px; color:var(--dim); line-height:1.55;
+  }
+  .exp-text strong{color:var(--white);font-weight:600;}
+  .exp-text .loc{color:var(--blue);font-weight:500;}
+
+  /* ─── Quote ─── */
+  .quote-card{
+    border:1px solid rgba(0,229,255,0.12);
+    border-radius:18px; padding:28px 32px;
+    background:rgba(0,229,255,0.03);
+    font-size:15px; color:var(--dim); line-height:1.7;
+    position:relative;
+  }
+  .quote-card::before{
+    content:'"'; position:absolute; top:12px; left:18px;
+    font-size:48px; color:var(--blue); opacity:0.2; font-family:serif; line-height:1;
+  }
+  .quote-card em{color:var(--white);font-style:normal;font-weight:500;}
+
+  /* ─── Footer nav ─── */
+  .footer-nav{
+    text-align:center; margin-top:40px; padding-top:24px;
+    border-top:1px solid var(--panel-border);
+  }
+  .footer-nav a{
+    display:inline-flex; align-items:center; gap:8px;
+    font-family:var(--font-display); font-weight:600; font-size:14px;
+    background:linear-gradient(90deg, rgba(57,255,20,0.08), rgba(0,229,255,0.08));
+    color:var(--white); border:1px solid rgba(57,255,20,0.2);
+    border-radius:10px; padding:12px 24px; text-decoration:none;
+    transition:all .25s ease;
+  }
+  .footer-nav a:hover{
+    border-color:var(--blue); box-shadow:0 0 20px rgba(0,229,255,0.15);
+    transform:translateY(-2px);
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar{width:4px;}
+  ::-webkit-scrollbar-track{background:var(--bg);}
+  ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:4px;}
+
+  @page{size:A4 portrait;margin:12mm;}
+  @media print{
+    body{overflow:visible!important;background:#fff!important;}
+    #bgcanvas,.noise-overlay,.topbar,.footer-nav,.pdf-btn{display:none!important;}
+    .container{padding:0!important;max-width:100%!important;}
+    .card{border-color:#ddd!important;background:#fafafa!important;break-inside:avoid!important;}
+    .card *{color:#333!important;}
+    .card .card-title{color:#0077E5!important;}
+    .hero *{color:#111!important;}
+    .hero .grad{-webkit-background-clip:unset!important;background-clip:unset!important;background:linear-gradient(90deg,#1D9E12,#0077E5)!important;-webkit-background-clip:text!important;background-clip:text!important;color:transparent!important;}
+    .hero .role,.hero .meta,.hero .meta span,.hero .meta a{color:#555!important;}
+    .quote-card{border-color:#ddd!important;background:#fafafa!important;}
+    .quote-card *{color:#333!important;}
+    .quote-card::before{color:#0077E5!important;opacity:0.3!important;}
+  }
+
+  .pdf-btn{
+    position:fixed;z-index:50;top:16px;right:16px;
+    width:44px;height:44px;border-radius:50%;
+    background:rgba(10,14,23,0.8);backdrop-filter:blur(12px);
+    border:1px solid rgba(0,229,255,0.2);
+    color:var(--blue);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    font-size:17px;transition:all .3s ease;
+    box-shadow:0 4px 20px rgba(0,0,0,0.3);
+  }
+  .pdf-btn:hover{
+    border-color:var(--blue);
+    box-shadow:0 0 24px rgba(0,229,255,0.2);
+    transform:translateY(-2px);
+  }
+  @media print{.pdf-btn{display:none!important;}}
+</style>
+</head>
+<body>
+<canvas id="bgcanvas"></canvas>
+<div class="noise-overlay"></div>
+
+<div class="topbar">
+  <div class="brand"><span class="dot"></span> FENDOZ // ABOUT</div>
+  <a href="presentasi_2.html">← Kembali ke Presentasi</a>
+</div>
+
+<div class="container">
+
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-avatar-ring">
+      <img src="img/ayah_and_wawa.jpg" alt="Efendi Hariyadi" class="hero-avatar">
+    </div>
+    <div>
+      <h1>Efendi Hariyadi <span class="grad">| FenDoz</span></h1>
+      <p class="role">Software Engineer &bull; Full-Stack Developer</p>
+      <div class="meta">
+        <span>📍 Samarinda</span>
+        <span>🔗 <a href="https://sm-alfariz.github.io" style="color:var(--blue);text-decoration:none;">sm-alfariz.github.io</a></span>
+        <span>🐙 <a href="https://github.com/sm-alfariz" style="color:var(--blue);text-decoration:none;">@sm-alfariz</a></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- About -->
+  <div class="card">
+    <div class="card-title">Tentang Saya</div>
+    <p class="about-text">
+      Passionate Software Engineer dengan 20 tahun pengalaman merancang aplikasi web dan desktop yang scalable serta mengoptimalkan performa sistem. Mampu menjembatani kesenjangan antara kode elegan dan kebutuhan bisnis, dengan fokus kuat pada arsitektur bersih, <em style="color:var(--white);font-style:normal;">continuous deployment</em>, dan desain yang berpusat pada pengguna.
+    </p>
+  </div>
+
+  <!-- Skills -->
+  <div class="card">
+    <div class="card-title">Technical Skills</div>
+    <div class="skills-grid">
+      <div class="skill-chip"><span class="hl">Scrum</span> — manage project & team</div>
+      <div class="skill-chip"><span class="hl">Linux</span> — Arch Linux user since 2004, AUR Contributor</div>
+      <div class="skill-chip"><span class="hl">Languages</span> — PHP, JS/ES6+, Python, Kotlin, SQL</div>
+      <div class="skill-chip"><span class="hl">Frontend</span> — React, Next.js, Bootstrap 5, Tailwind CSS</div>
+      <div class="skill-chip"><span class="hl">Backend</span> — Node.js, Express, Django, Laravel, PostgreSQL, MongoDB, Redis</div>
+      <div class="skill-chip"><span class="hl">Tools</span> — Git/GitHub, Docker, CI/CD, Postman</div>
+      <div class="skill-chip" style="border-color:rgba(0,229,255,0.15);">
+        <span class="hl">AI (2yr)</span> — Vertex AI, Ollama, n8n
+      </div>
+    </div>
+  </div>
+
+  <!-- Experience -->
+  <div class="card">
+    <div class="card-title">Pengalaman Profesional</div>
+    <div class="exp-item">
+      <div class="exp-dot"></div>
+      <div class="exp-text"><span class="loc">Jakarta</span> — <strong>Engineering</strong> sebagai WebMaster Viva Media</div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-dot"></div>
+      <div class="exp-text"><span class="loc">Samarinda</span> — <strong>Web Master</strong> Bongkar Grup Media</div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-dot"></div>
+      <div class="exp-text"><strong>Engineering</strong> — Nuh Media Saktindo</div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-dot"></div>
+      <div class="exp-text"><strong>Engineering Web &amp; Mobile Android</strong> (Kotlin) — Thortech</div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-dot"></div>
+      <div class="exp-text"><strong>CTO</strong> — Thortech</div>
+    </div>
+    <div class="exp-item">
+      <div class="exp-dot"></div>
+      <div class="exp-text"><strong>CTO</strong> — Data Collect &amp; Analytics Pilkada, Pemilu RI (2014–2024)</div>
+    </div>
+  </div>
+
+  <!-- Quote -->
+  <div class="quote-card">
+    Menulis code sejak di zaman di mana semua harus manual tanpa referensi dan kurangnya komunitas, ketika internet harus bayar Rp. 6.000 per jam dan menulis code yang kadang harus disimpan dalam <em>floppy disk</em>, dan merasa bangga punya flashdisk sebesar 150MB serasa Anak IT banget dan dikalungkan ke leher.
+  </div>
+
+  <!-- Back -->
+  <div class="footer-nav">
+    <a href="presentasi_2.html">← Kembali ke Presentasi</a>
+  </div>
+
+</div>
+  <button class="pdf-btn" onclick="handlePrint()" title="Download PDF">⬇</button>
+
+<script>
+  // ── Print handler ──
+  function handlePrint() {
+    document.querySelectorAll('.card [style*="color"], .hero [style*="color"], .quote-card [style*="color"]').forEach(el => {
+      el.dataset.printCol = el.style.color || '';
+      el.style.setProperty('color', '#111', 'important');
+    });
+    setTimeout(() => window.print(), 50);
+  }
+  window.addEventListener('afterprint', () => {
+    document.querySelectorAll('[data-print-col]').forEach(el => {
+      if (el.dataset.printCol) el.style.color = el.dataset.printCol;
+      else el.style.color = '';
+      delete el.dataset.printCol;
+    });
+  });
+
+  const canvas = document.getElementById('bgcanvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles;
+  function resize(){
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  function initParticles(){
+    const count = Math.min(70, Math.floor((W*H)/18000));
+    particles = Array.from({length:count}, () => ({
+      x: Math.random()*W, y: Math.random()*H,
+      vx: (Math.random()-0.5)*0.25, vy: (Math.random()-0.5)*0.25,
+      r: Math.random()*1.6+0.6
+    }));
+  }
+  function tick(){
+    ctx.clearRect(0,0,W,H);
+    for(const p of particles){
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>W)p.vx*=-1;if(p.y<0||p.y>H)p.vy*=-1;
+    }
+    for(let i=0;i<particles.length;i++){
+      for(let j=i+1;j<particles.length;j++){
+        const a=particles[i],b=particles[j];
+        const dx=a.x-b.x,dy=a.y-b.y,dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<140){
+          ctx.strokeStyle=`rgba(0,229,255,${0.1*(1-dist/140)})`;
+          ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+        }
+      }
+    }
+    for(const p of particles){
+      ctx.beginPath();
+      ctx.fillStyle='rgba(57,255,20,0.5)';
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2); ctx.fill();
+    }
+    requestAnimationFrame(tick);
+  }
+  window.addEventListener('resize',()=>{resize();initParticles();});
+  resize();initParticles();tick();
+</script>
+</body>
+</html>

@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vibe Coding — Era Baru Pengembangan Software</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  @page{size:A4 landscape;margin:12mm;}
+  @media print{
+    body{overflow:visible!important;background:#fff!important;}
+    .app{height:auto!important;overflow:visible!important;background:none!important;}
+    .orb-canvas,.noise-overlay,.controls,.topbar{display:none!important;}
+    .stage{overflow:visible!important;padding:0!important;display:block!important;}
+    .slide{position:relative!important;width:100%!important;max-height:none!important;height:auto!important;min-height:0!important;opacity:1!important;transform:none!important;pointer-events:none!important;break-after:page!important;padding:40px 48px!important;border:none!important;border-radius:0!important;box-shadow:none!important;background:transparent!important;backdrop-filter:none!important;color:#000!important;}
+    .slide .grad{-webkit-background-clip:unset!important;background-clip:unset!important;background:none!important;color:#1D9E12!important;}
+    .slide .grad-warm{-webkit-background-clip:unset!important;background-clip:unset!important;background:none!important;color:#d4a000!important;}
+    .slide .grad-cool{-webkit-background-clip:unset!important;background-clip:unset!important;background:none!important;color:#0077E5!important;}
+    .slide, .slide *{color:#111!important;}
+    .slide .dim,.slide .subtitle,.slide .c-item,.slide .f-detail,.slide .chat-line,.slide .conc-body,.slide .demo-list li,.slide .demo-text,.slide .text{color:#555!important;}
+    .slide [style*="color"]{color:#111!important;}
+    .slide .tag,.slide .tag-role,.slide .tag-goal,.slide .tag-feat,.slide .tag-style{color:#111!important;}
+    .c-card,.g-card,.f-step,.t-card,.chat-bubble,.demo-list li,.conc-card,.f-detail,.core-box{border-color:#ddd!important;background:#fafafa!important;}
+    .gloss-grid .g-card,.f-step,.t-card{border-color:#ddd!important;background:#fafafa!important;}
+  }
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0a0a0f;
+    --surface:#111118;
+    --surface2:#1a1a24;
+    --border:rgba(255,255,255,0.06);
+    --text:#f0f0f5;
+    --dim:rgba(255,255,255,0.5);
+    --dimmer:rgba(255,255,255,0.25);
+    --green:#22ff66;
+    --blue:#38b5ff;
+    --purple:#b47aff;
+    --yellow:#ffd84d;
+    --orange:#ff7a4d;
+    --font:'Inter', system-ui, -apple-system, sans-serif;
+    --ease-out-expo:cubic-bezier(0.16,1,0.3,1);
+    --ease-spring:cubic-bezier(0.34,1.56,0.64,1);
+  }
+  html,body{
+    margin:0;padding:0;height:100%;
+    background:var(--bg);
+    color:var(--text);
+    font-family:var(--font);
+    overflow:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  /* ─── Orb background ─── */
+  .orb-canvas{
+    position:fixed;inset:0;z-index:0;
+    width:100%;height:100%;
+  }
+
+  /* ─── Main container ─── */
+  .app{
+    position:relative;z-index:1;
+    width:100vw;height:100vh;
+    display:flex;flex-direction:column;
+  }
+
+  /* ─── Top bar ─── */
+  .topbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 32px;
+    border-bottom:1px solid var(--border);
+    flex-shrink:0;
+    background:rgba(10,10,15,0.6);
+    backdrop-filter:blur(20px);
+  }
+  .brand{
+    display:flex;align-items:center;gap:10px;
+    font-size:12px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;
+    color:var(--dim);
+  }
+  .brand-pulse{
+    width:7px;height:7px;border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 10px var(--green),0 0 20px rgba(34,255,102,0.3);
+    animation:pulse-dot 2s ease-in-out infinite;
+  }
+  @keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)}}
+  .topbar-right{display:flex;align-items:center;gap:16px}
+  .slide-num{
+    font-size:13px;font-weight:500;color:var(--dimmer);
+    font-variant-numeric:tabular-nums;
+    letter-spacing:0.04em;
+  }
+  .slide-num b{color:var(--text);font-weight:600}
+  .progress-bar{
+    width:160px;height:2px;border-radius:2px;
+    background:var(--border);
+    overflow:hidden;
+  }
+  .progress-fill{
+    height:100%;width:0%;
+    background:linear-gradient(90deg,var(--green),var(--blue));
+    border-radius:2px;
+    transition:width .6s var(--ease-out-expo);
+  }
+
+  /* ─── Stage ─── */
+  .stage{
+    flex:1;
+    display:flex;align-items:center;justify-content:center;
+    padding:40px 48px;
+    position:relative;
+    perspective:1200px;
+  }
+  @media(max-width:768px){.stage{padding:24px 16px}}
+
+  /* ─── Slide ─── */
+  .slide{
+    position:absolute;
+    width:min(1100px,100%);
+    max-height:78vh;overflow-y:auto;
+    padding:40px 48px;
+    background:rgba(17,17,24,0.6);
+    backdrop-filter:blur(24px);
+    border:1px solid var(--border);
+    border-radius:24px;
+    box-shadow:0 24px 80px rgba(0,0,0,0.4);
+    opacity:0;
+    transform:translateY(30px) scale(0.97) rotateX(4deg);
+    transition:all .7s var(--ease-out-expo);
+    pointer-events:none;
+    will-change:transform,opacity;
+  }
+  .slide.active{
+    opacity:1;
+    transform:translateY(0) scale(1) rotateX(0deg);
+    pointer-events:auto;
+  }
+  .slide::-webkit-scrollbar{width:4px}
+  .slide::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:4px}
+
+  /* ─── Slide inner animations ─── */
+  .slide.active .anim-up{
+    animation:animUp .6s var(--ease-out-expo) both;
+  }
+  .slide.active .anim-up-d1{animation-delay:.10s}
+  .slide.active .anim-up-d2{animation-delay:.18s}
+  .slide.active .anim-up-d3{animation-delay:.26s}
+  .slide.active .anim-up-d4{animation-delay:.34s}
+  .slide.active .anim-up-d5{animation-delay:.42s}
+  .slide.active .anim-up-d6{animation-delay:.50s}
+  .slide.active .anim-scale{
+    animation:animScale .7s var(--ease-spring) both;
+  }
+  .slide.active .anim-scale-d1{animation-delay:.10s}
+  .slide.active .anim-scale-d2{animation-delay:.20s}
+  .slide.active .anim-scale-d3{animation-delay:.30s}
+
+  @keyframes animUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+  @keyframes animScale{from{opacity:0;transform:scale(0.92)}to{opacity:1;transform:scale(1)}}
+
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;
+    color:var(--blue);margin-bottom:16px;
+  }
+  .eyebrow::before{
+    content:'';width:18px;height:1.5px;background:var(--blue);border-radius:2px;
+  }
+  h1.slide-title{
+    font-size:clamp(26px,3.8vw,46px);
+    font-weight:800;
+    line-height:1.1;
+    letter-spacing:-0.025em;
+    margin:0 0 12px 0;
+  }
+  .grad{background:linear-gradient(135deg,var(--green),var(--blue));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .grad-warm{background:linear-gradient(135deg,var(--yellow),var(--orange));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .grad-cool{background:linear-gradient(135deg,var(--blue),var(--purple));-webkit-background-clip:text;background-clip:text;color:transparent}
+  p.subtitle{
+    font-size:clamp(14px,1.3vw,17px);
+    color:var(--dim);
+    max-width:600px;
+    line-height:1.6;
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 1 — TITLE
+     ══════════════════════════════════════ */
+  .s1{text-align:center;display:flex;flex-direction:column;align-items:center;padding:56px 48px}
+  .s1-badge{
+    display:inline-flex;
+    font-size:11px;font-weight:600;letter-spacing:0.22em;text-transform:uppercase;
+    color:var(--dimmer);
+    padding:6px 18px;border:1px solid var(--border);border-radius:100px;
+    background:rgba(255,255,255,0.02);
+    margin-bottom:28px;
+  }
+  .s1-title{
+    font-size:clamp(30px,5vw,60px);
+    font-weight:900;line-height:1.08;letter-spacing:-0.03em;
+    margin:0 0 20px 0;
+  }
+  .s1-rule{
+    width:72px;height:3px;margin:28px auto;
+    background:linear-gradient(90deg,var(--green),var(--blue));
+    border-radius:4px;
+  }
+  .s1-sub{font-size:clamp(15px,1.6vw,19px);color:var(--dim);max-width:540px;line-height:1.6}
+  .s1-presenter{margin-top:8px;font-size:15px;color:var(--dim)}
+  .s1-presenter strong{color:var(--blue);font-weight:700;font-size:20px}
+  .s1-avatar-wrap{margin-top:18px}
+  .s1-avatar-ring{
+    width:72px;height:72px;border-radius:50%;
+    padding:3px;
+    background:linear-gradient(135deg,var(--green),var(--blue));
+    box-shadow:0 0 20px rgba(34,255,102,0.25),0 0 50px rgba(56,181,255,0.15);
+    animation:avatar-rotate 6s linear infinite;
+  }
+  @keyframes avatar-rotate{0%{filter:hue-rotate(0deg)}100%{filter:hue-rotate(360deg)}}
+  .s1-avatar{
+    width:100%;height:100%;border-radius:50%;
+    object-fit:cover;display:block;
+    border:2px solid var(--bg);
+  }
+  .s1-chips{
+    display:flex;gap:10px;flex-wrap:wrap;justify-content:center;
+    margin-top:36px;
+  }
+  .chip{
+    font-size:11px;font-weight:600;letter-spacing:0.06em;
+    padding:7px 16px;border-radius:8px;
+    border:1px solid var(--border);
+    background:rgba(255,255,255,0.02);
+    color:var(--dim);
+    transition:all .3s ease;
+  }
+  .chip:hover{border-color:rgba(56,181,255,0.3);color:var(--text)}
+
+  /* ══════════════════════════════════════
+     SLIDE 2 — COMPARISON
+     ══════════════════════════════════════ */
+  .compare-grid{
+    display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:28px;
+  }
+  @media(max-width:760px){.compare-grid{grid-template-columns:1fr}}
+  .c-card{
+    border-radius:16px;padding:24px;
+    border:1px solid var(--border);
+    background:linear-gradient(160deg,rgba(255,255,255,0.02),rgba(255,255,255,0));
+    position:relative;overflow:hidden;
+    transition:transform .4s var(--ease-out-expo),border-color .3s;
+  }
+  .c-card:hover{transform:translateY(-4px)}
+  .c-card.new{border-color:rgba(34,255,102,0.15)}
+  .c-card.new::after{
+    content:'';position:absolute;top:0;left:0;right:0;height:2px;
+    background:linear-gradient(90deg,var(--green),var(--blue));
+  }
+  .c-label{
+    font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;
+    margin-bottom:14px;display:flex;align-items:center;gap:8px;
+  }
+  .c-card.old .c-label{color:var(--dimmer)}
+  .c-card.new .c-label{color:var(--green)}
+  .c-item{
+    display:flex;gap:12px;align-items:flex-start;
+    padding:11px 0;border-bottom:1px solid rgba(255,255,255,0.03);
+    font-size:14px;color:var(--dim);line-height:1.5;
+  }
+  .c-item:last-child{border-bottom:none}
+  .c-icon{flex-shrink:0;margin-top:2px;font-weight:700}
+  .old .c-icon{color:#ff5c5c}
+  .new .c-icon{color:var(--green)}
+  .core-box{
+    margin-top:22px;padding:16px 20px;border-radius:12px;
+    background:rgba(56,181,255,0.04);border:1px solid rgba(56,181,255,0.12);
+    display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+    font-size:13.5px;color:var(--dim);
+  }
+  .core-box b{color:var(--blue);font-weight:600}
+  .core-box .s{color:var(--dimmer)}
+
+  /* ══════════════════════════════════════
+     SLIDE 3 — GLOSSARY
+     ══════════════════════════════════════ */
+  .gloss-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+    gap:10px;margin-top:24px;
+  }
+  .g-card{
+    border:1px solid var(--border);border-radius:14px;padding:18px 18px;
+    background:rgba(255,255,255,0.01);
+    transition:all .4s var(--ease-out-expo);
+    cursor:default;
+  }
+  .g-card:hover{
+    border-color:rgba(56,181,255,0.2);
+    transform:translateY(-4px) scale(1.01);
+    background:rgba(56,181,255,0.02);
+  }
+  .g-card h4{font-size:13.5px;font-weight:700;color:var(--blue);margin-bottom:5px}
+  .g-card p{font-size:12.5px;color:var(--dim);line-height:1.55;margin:0}
+
+  /* ══════════════════════════════════════
+     SLIDE 4 — WORKFLOW
+     ══════════════════════════════════════ */
+  .flow-wrap{
+    display:flex;gap:0;margin-top:32px;justify-content:center;
+    position:relative;
+  }
+  .flow-connector{
+    position:absolute;top:32px;left:10%;right:10%;
+    height:2px;
+    background:linear-gradient(90deg,var(--border),var(--border));
+    border-radius:2px;
+  }
+  .flow-connector-fill{
+    height:100%;width:0%;
+    background:linear-gradient(90deg,var(--green),var(--blue));
+    border-radius:2px;
+    transition:width .8s var(--ease-out-expo);
+  }
+  .f-step{
+    flex:1;min-width:0;max-width:180px;
+    display:flex;flex-direction:column;align-items:center;
+    text-align:center;
+    position:relative;z-index:2;
+    cursor:pointer;padding:0 8px;
+    transition:transform .4s var(--ease-out-expo);
+  }
+  .f-step:hover{transform:translateY(-4px)}
+  .f-circle{
+    width:56px;height:56px;border-radius:50%;
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;font-weight:700;
+    background:var(--surface2);
+    border:2px solid var(--border);
+    color:var(--dimmer);
+    transition:all .5s var(--ease-out-expo);
+    margin-bottom:10px;
+    position:relative;
+  }
+  .f-step.on .f-circle{
+    border-color:var(--green);
+    background:rgba(34,255,102,0.06);
+    color:var(--green);
+    box-shadow:0 0 30px rgba(34,255,102,0.1);
+  }
+  .f-step.on .f-circle::after{
+    content:'';position:absolute;inset:-4px;border-radius:50%;
+    border:1px solid rgba(34,255,102,0.15);
+    animation:ripple 2s ease-out infinite;
+  }
+  @keyframes ripple{
+    0%{transform:scale(1);opacity:1}
+    100%{transform:scale(1.25);opacity:0}
+  }
+  .f-label{font-size:12px;font-weight:600;margin-bottom:2px}
+  .f-step.on .f-label{color:var(--green)}
+  .f-desc{font-size:10.5px;color:var(--dimmer);line-height:1.3;max-width:90px}
+  .f-detail{
+    margin-top:28px;padding:18px 22px;border-radius:14px;
+    border:1px solid var(--border);background:rgba(255,255,255,0.01);
+    font-size:14px;color:var(--dim);line-height:1.6;
+    transition:all .3s;
+    min-height:60px;
+  }
+  .f-detail b{color:var(--text)}
+
+  @media(max-width:800px){
+    .flow-wrap{flex-wrap:wrap;gap:10px}
+    .flow-connector{display:none}
+    .f-step{min-width:100px;max-width:120px;padding:6px}
+  }
+
+  /* ══════════════════════════════════════
+     SLIDE 5 — TOOLS
+     ══════════════════════════════════════ */
+  .tools-grid{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px;
+  }
+  @media(max-width:860px){.tools-grid{grid-template-columns:1fr}}
+  .t-card{
+    border:1px solid var(--border);border-radius:18px;padding:24px;
+    background:linear-gradient(160deg,rgba(255,255,255,0.02),rgba(255,255,255,0));
+    transition:all .4s var(--ease-out-expo);
+    position:relative;overflow:hidden;
+  }
+  .t-card:hover{
+    transform:translateY(-6px);
+    border-color:rgba(56,181,255,0.2);
+  }
+  .t-card::before{
+    content:'';position:absolute;top:-50%;left:-50%;width:200%;height:200%;
+    background:conic-gradient(from 0deg,transparent,rgba(34,255,102,0.03),transparent,rgba(56,181,255,0.03),transparent);
+    opacity:0;transition:opacity .6s;
+  }
+  .t-card:hover::before{opacity:1}
+  .t-icon{
+    width:44px;height:44px;border-radius:12px;
+    display:flex;align-items:center;justify-content:center;
+    font-size:20px;margin-bottom:16px;
+    position:relative;z-index:1;
+  }
+  .t-card:nth-child(1) .t-icon{background:rgba(56,181,255,0.1);color:var(--blue)}
+  .t-card:nth-child(2) .t-icon{background:rgba(34,255,102,0.1);color:var(--green)}
+  .t-card:nth-child(3) .t-icon{background:rgba(180,122,255,0.1);color:var(--purple)}
+  .t-name{font-weight:700;font-size:16px;margin-bottom:14px;position:relative;z-index:1}
+  .t-list{display:flex;flex-direction:column;gap:8px;position:relative;z-index:1}
+  .t-chip{
+    font-size:12px;font-weight:500;color:var(--dim);
+    padding:8px 12px;border-radius:8px;
+    background:rgba(255,255,255,0.02);
+    border:1px solid rgba(255,255,255,0.04);
+    transition:all .2s;
+  }
+  .t-chip:hover{color:var(--text);border-color:rgba(255,255,255,0.1)}
+
+  /* ══════════════════════════════════════
+     SLIDE 6 — PROMPT
+     ══════════════════════════════════════ */
+  .chat-scene{display:flex;flex-direction:column;align-items:flex-end;margin-top:24px}
+  .chat-bubble{
+    max-width:680px;width:100%;
+    border-radius:20px 20px 4px 20px;
+    padding:22px 26px;
+    background:linear-gradient(160deg,rgba(255,255,255,0.03),rgba(255,255,255,0));
+    border:1px solid var(--border);
+  }
+  .chat-line{
+    display:flex;flex-wrap:wrap;align-items:baseline;gap:4px;
+    padding:5px 0;line-height:1.8;
+    font-size:14.5px;
+  }
+  .tag{
+    display:inline-block;
+    font-size:10px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+    padding:2px 8px;border-radius:6px;
+    margin-right:4px;
+  }
+  .tag-role{background:rgba(255,216,77,0.12);color:var(--yellow)}
+  .tag-goal{background:rgba(56,181,255,0.12);color:var(--blue)}
+  .tag-feat{background:rgba(34,255,102,0.12);color:var(--green)}
+  .tag-style{background:rgba(180,122,255,0.12);color:var(--purple)}
+  .chat-cursor{
+    display:inline-block;
+    width:7px;height:16px;
+    background:var(--green);
+    margin-left:2px;
+    animation:blink 1s step-end infinite;
+    vertical-align:text-bottom;
+  }
+  @keyframes blink{50%{opacity:0}}
+  .chat-footer{
+    display:flex;gap:18px;flex-wrap:wrap;margin-top:18px;
+  }
+  .chat-footer span{
+    display:flex;align-items:center;gap:7px;
+    font-size:11px;font-weight:500;color:var(--dimmer);
+    letter-spacing:0.03em;
+  }
+  .chat-footer .dot{width:8px;height:8px;border-radius:3px}
+
+  /* ══════════════════════════════════════
+     SLIDE 7 — LIVE DEMO
+     ══════════════════════════════════════ */
+  .demo-list{list-style:none;margin-top:24px;display:flex;flex-direction:column;gap:8px}
+  .demo-list li{
+    display:flex;align-items:center;gap:14px;
+    padding:14px 20px;
+    border:1px solid var(--border);border-radius:14px;
+    background:rgba(255,255,255,0.01);
+    font-size:14px;color:var(--dim);
+    cursor:pointer;transition:all .35s var(--ease-out-expo);
+  }
+  .demo-list li:hover{border-color:rgba(56,181,255,0.15);transform:translateX(4px)}
+  .demo-list li:active{transform:translateX(2px)}
+  .demo-num{
+    display:flex;align-items:center;justify-content:center;
+    width:28px;height:28px;border-radius:50%;
+    background:rgba(56,181,255,0.06);color:var(--blue);
+    font-weight:700;font-size:12px;flex-shrink:0;
+    transition:all .3s;
+  }
+  .demo-list li.done{opacity:0.5}
+  .demo-list li.done .demo-num{background:rgba(34,255,102,0.1);color:var(--green)}
+  .demo-list li.done .demo-text{text-decoration:line-through}
+
+  /* ══════════════════════════════════════
+     SLIDE 8 — CONCLUSION
+     ══════════════════════════════════════ */
+  .conc-grid{display:flex;flex-direction:column;gap:12px;margin-top:26px}
+  .conc-card{
+    display:flex;gap:16px;align-items:flex-start;
+    border:1px solid var(--border);border-radius:16px;
+    padding:18px 22px;
+    background:rgba(255,255,255,0.01);
+    transition:all .35s var(--ease-out-expo);
+  }
+  .conc-card:hover{transform:translateX(6px);border-color:rgba(255,255,255,0.06)}
+  .conc-ico{
+    flex-shrink:0;width:38px;height:38px;border-radius:10px;
+    display:flex;align-items:center;justify-content:center;font-size:18px;
+  }
+  .conc-card:nth-child(1) .conc-ico{background:rgba(56,181,255,0.08);color:var(--blue)}
+  .conc-card:nth-child(2) .conc-ico{background:rgba(255,122,77,0.08);color:var(--orange)}
+  .conc-card:nth-child(3) .conc-ico{background:rgba(34,255,102,0.08);color:var(--green)}
+  .conc-title{font-weight:700;font-size:15px;margin-bottom:3px}
+  .conc-body{font-size:13px;color:var(--dim);line-height:1.5}
+  .conc-final{
+    margin-top:20px;padding:18px;border-radius:16px;text-align:center;
+    font-size:clamp(15px,1.8vw,20px);font-weight:700;
+    background:linear-gradient(135deg,rgba(34,255,102,0.06),rgba(56,181,255,0.06));
+    border:1px solid rgba(34,255,102,0.15);
+  }
+
+  /* ─── Controls ─── */
+  .controls{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:16px 32px;
+    border-top:1px solid var(--border);
+    flex-shrink:0;
+    background:rgba(10,10,15,0.6);
+    backdrop-filter:blur(20px);
+  }
+  .ctrl-btn{
+    display:flex;align-items:center;gap:8px;
+    font-family:var(--font);font-weight:600;font-size:13px;
+    background:rgba(255,255,255,0.03);color:var(--text);
+    border:1px solid var(--border);border-radius:10px;
+    padding:10px 20px;cursor:pointer;
+    transition:all .3s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .ctrl-btn:hover:not(:disabled){
+    border-color:rgba(56,181,255,0.3);
+    box-shadow:0 0 20px rgba(56,181,255,0.06);
+    transform:translateY(-1px);
+  }
+  .ctrl-btn:disabled{opacity:0.25;cursor:not-allowed}
+  .ctrl-btn.primary{
+    background:linear-gradient(135deg,rgba(34,255,102,0.08),rgba(56,181,255,0.08));
+    border-color:rgba(34,255,102,0.2);
+  }
+
+  .pdf-btn{
+    position:fixed;z-index:50;bottom:80px;right:20px;
+    width:48px;height:48px;border-radius:50%;
+    background:rgba(17,17,24,0.85);backdrop-filter:blur(12px);
+    border:1px solid rgba(56,181,255,0.2);
+    color:var(--blue);cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    font-size:18px;transition:all .3s ease;
+    box-shadow:0 4px 20px rgba(0,0,0,0.4);
+  }
+  .pdf-btn:hover{
+    border-color:var(--blue);
+    box-shadow:0 0 24px rgba(56,181,255,0.2);
+    transform:translateY(-2px);
+  }
+  @media print{.pdf-btn{display:none!important;}}
+
+  @media(max-width:640px){
+    .topbar{padding:12px 16px}
+    .progress-bar{width:80px}
+    .controls{padding:12px 16px}
+    .ctrl-btn span.lbl{display:none}
+    .slide{padding:24px 20px}
+  }
+</style>
+</head>
+<body>
+<canvas class="orb-canvas" id="orbCanvas"></canvas>
+<div class="app">
+  <div class="topbar">
+    <div class="brand"><span class="brand-pulse"></span> VIBE CODING</div>
+    <div class="topbar-right">
+      <div class="progress-bar"><div class="progress-fill" id="progFill"></div></div>
+      <div class="slide-num"><b id="curNum">01</b> / 08</div>
+    </div>
+  </div>
+
+  <div class="stage" id="stage">
+
+    <!-- ═══ SLIDE 1 ═══ -->
+    <section class="slide active" data-i="0">
+      <div class="s1">
+        <div class="s1-badge anim-up">// era baru pengembangan software</div>
+        <h1 class="s1-title anim-up anim-up-d1">Berkenalan dengan<br><span class="grad">Vibe Coding</span></h1>
+        <div class="s1-rule anim-up anim-up-d2"></div>
+        <p class="s1-sub anim-up anim-up-d2">Membangun Aplikasi Menggunakan Kekuatan Ide dan AI</p>
+        <div class="s1-presenter anim-up anim-up-d3">Disajikan oleh <strong>[FenDoZ]</strong></div>
+        <div class="s1-avatar-wrap anim-up anim-up-d4">
+          <div class="s1-avatar-ring">
+            <a href="aboutme.html" title="Klik untuk lihat profil">
+              <img src="img/ayah_and_wawa.jpg" alt="FenDoZ" class="s1-avatar">
+            </a>
+          </div>
+        </div>
+        <div class="s1-chips anim-up anim-up-d4">
+          <span class="chip">IDE</span>
+          <span class="chip">PROMPTING</span>
+          <span class="chip">GENERATE</span>
+          <span class="chip">ITERASI</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ SLIDE 2 ═══ -->
+    <section class="slide" data-i="1">
+      <div class="eyebrow anim-up">Konsep Dasar</div>
+      <h1 class="slide-title anim-up anim-up-d1">Apa itu <span class="grad">Vibe Coding?</span></h1>
+      <p class="subtitle anim-up anim-up-d2">Pergeseran cara membangun software: dari menulis sintaks, menjadi mengarahkan AI.</p>
+      <div class="compare-grid">
+        <div class="c-card old anim-scale anim-scale-d1">
+          <div class="c-label">◂ Dulu / Traditional</div>
+          <div class="c-item"><span class="c-icon">✕</span> Mengetik sintaks manual, debugging pusing.</div>
+          <div class="c-item"><span class="c-icon">✕</span> Membaca dokumentasi tebal sebelum mulai.</div>
+          <div class="c-item"><span class="c-icon">✕</span> Error berantai karena satu salah sintaks.</div>
+        </div>
+        <div class="c-card new anim-scale anim-scale-d2">
+          <div class="c-label">▸ Sekarang / Vibe Coding</div>
+          <div class="c-item"><span class="c-icon">✓</span> Menulis instruksi dalam bahasa alami.</div>
+          <div class="c-item"><span class="c-icon">✓</span> Review hasil kode yang ditulis AI.</div>
+          <div class="c-item"><span class="c-icon">✓</span> Uji coba instan, langsung terlihat hasilnya.</div>
+        </div>
+      </div>
+      <div class="core-box anim-up anim-up-d4">
+        <span>💡</span>
+        <span>Dipopulerkan oleh <b>Andrej Karpathy</b> (Awal 2025)</span>
+        <span class="s">•</span>
+        <span>Peran manusia naik kelas menjadi <b>"Project Manager"</b></span>
+      </div>
+    </section>
+
+    <!-- ═══ SLIDE 3 ═══ -->
+    <section class="slide" data-i="2">
+      <div class="eyebrow anim-up">Referensi</div>
+      <h1 class="slide-title anim-up anim-up-d1">Glosarium & Istilah Kunci <span class="grad-cool">Vibe Coding</span></h1>
+      <p class="subtitle anim-up anim-up-d2">Istilah-istilah penting yang perlu dipahami dalam ekosistem Vibe Coding.</p>
+      <div class="gloss-grid">
+        <div class="g-card anim-scale anim-scale-d1"><h4>Intent-Driven Development</h4><p>Fokus pada "apa" yang ingin dibuat, bukan sintaks kodenya.</p></div>
+        <div class="g-card anim-scale anim-scale-d1"><h4>System Prompt</h4><p>Instruksi awal untuk mengatur konteks, gaya, dan aturan kerja AI.</p></div>
+        <div class="g-card anim-scale anim-scale-d2"><h4>Few-Shot Prompting</h4><p>Memberikan contoh pola atau format sebelum meminta tugas inti.</p></div>
+        <div class="g-card anim-scale anim-scale-d2"><h4>Edge Cases</h4><p>Kondisi ekstrem atau error tidak terduga yang perlu diantisipasi AI.</p></div>
+        <div class="g-card anim-scale anim-scale-d3"><h4>Codebase</h4><p>Kumpulan file dan seluruh struktur program yang dikelola.</p></div>
+        <div class="g-card anim-scale anim-scale-d3"><h4>Illusion of Competence</h4><p>Fenomena merasa sangat ahli karena proses coding terasa terlalu instan.</p></div>
+      </div>
+    </section>
+
+    <!-- ═══ SLIDE 4 ═══ -->
+    <section class="slide" data-i="3">
+      <div class="eyebrow anim-up">Siklus Kerja</div>
+      <h1 class="slide-title anim-up anim-up-d1">Bagaimana <span class="grad">Vibe Coding</span> Bekerja?</h1>
+      <p class="subtitle anim-up anim-up-d2">Klik tiap tahap untuk melihat penjelasan detail.</p>
+      <div class="flow-wrap" id="flowWrap">
+        <div class="flow-connector"><div class="flow-connector-fill" id="flowFill"></div></div>
+      </div>
+      <div class="f-detail" id="flowDetail"></div>
+    </section>
+
+    <!-- ═══ SLIDE 5 ═══ -->
+    <section class="slide" data-i="4">
+      <div class="eyebrow anim-up">Ekosistem</div>
+      <h1 class="slide-title anim-up anim-up-d1">Ekosistem & <span class="grad">Alat Pendukung</span></h1>
+      <p class="subtitle anim-up anim-up-d2">Tiga lapisan tools yang membentuk stack Vibe Coding.</p>
+      <div class="tools-grid">
+        <div class="t-card anim-scale anim-scale-d1">
+          <div class="t-icon">⌨</div>
+          <div class="t-name">AI IDE</div>
+          <div class="t-list"><div class="t-chip">Cursor</div><div class="t-chip">Windsurf</div><div class="t-chip">VS Code + Copilot</div></div>
+        </div>
+        <div class="t-card anim-scale anim-scale-d2">
+          <div class="t-icon">⚡</div>
+          <div class="t-name">Web Instant Platforms</div>
+          <div class="t-list"><div class="t-chip">Bolt.new</div><div class="t-chip">Lovable.dev</div><div class="t-chip">Replit Agent</div></div>
+        </div>
+        <div class="t-card anim-scale anim-scale-d3">
+          <div class="t-icon">◆</div>
+          <div class="t-name">AI Brains (LLM)</div>
+          <div class="t-list"><div class="t-chip">Claude 3.5 Sonnet</div><div class="t-chip">GPT-4o</div><div class="t-chip">Kimi Code</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ SLIDE 6 ═══ -->
+    <section class="slide" data-i="5">
+      <div class="eyebrow anim-up">Prompting</div>
+      <h1 class="slide-title anim-up anim-up-d1">Seni Memberi <span class="grad-warm">Perintah</span></h1>
+      <p class="subtitle anim-up anim-up-d2">Formula prompt efektif: Role → Goal → Features → Style.</p>
+      <div class="chat-scene anim-scale anim-scale-d3">
+        <div class="chat-bubble">
+          <div class="chat-line"><span class="tag tag-role">ROLE</span> "Bertindaklah sebagai Senior Web Developer...</div>
+          <div class="chat-line"><span class="tag tag-goal">GOAL</span> ...buatkan saya aplikasi Kalkulator Anggaran Harian.</div>
+          <div class="chat-line"><span class="tag tag-feat">FEATURES</span> ...Fiturnya harus bisa input uang saku, simpan di LocalStorage.</div>
+          <div class="chat-line"><span class="tag tag-style">STYLE</span> ...Gunakan desain modern minimalis tema terang.<span class="chat-cursor"></span></div>
+        </div>
+        <div class="chat-footer">
+          <span><span class="dot" style="background:var(--yellow)"></span> ROLE</span>
+          <span><span class="dot" style="background:var(--blue)"></span> GOAL</span>
+          <span><span class="dot" style="background:var(--green)"></span> FEATURES</span>
+          <span><span class="dot" style="background:var(--purple)"></span> STYLE</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══ SLIDE 7 ═══ -->
+    <section class="slide" data-i="6">
+      <div class="eyebrow anim-up">Praktik Langsung</div>
+      <h1 class="slide-title anim-up anim-up-d1">🚀 Let's Vibe! — <span class="grad">Sesi Praktik Langsung</span></h1>
+      <p class="subtitle anim-up anim-up-d2">Build <strong style="color:var(--text)">"Kalkulator Anggaran Harian"</strong> — klik tiap langkah untuk menandai.</p>
+      <ul class="demo-list">
+        <li class="anim-scale anim-scale-d1"><span class="demo-num">1</span><span class="demo-text">Buka Platform Web Instan (Bolt.new / Lovable.dev)</span></li>
+        <li class="anim-scale anim-scale-d2"><span class="demo-num">2</span><span class="demo-text">Input Prompt Utama (Gunakan formula prompt dari Slide 6)</span></li>
+        <li class="anim-scale anim-scale-d3"><span class="demo-num">3</span><span class="demo-text">Review &amp; Uji Coba Aplikasi pada layar preview realtime</span></li>
+        <li class="anim-scale anim-scale-d4"><span class="demo-num">4</span><span class="demo-text">Perbaikan Bug (Beri feedback langsung ke chat AI)</span></li>
+        <li class="anim-scale anim-scale-d5"><span class="demo-num">5</span><span class="demo-text">Deploy &amp; Publish aplikasi ke internet dalam satu klik!</span></li>
+      </ul>
+    </section>
+
+    <!-- ═══ SLIDE 8 ═══ -->
+    <section class="slide" data-i="7">
+      <div class="eyebrow anim-up">Penutup</div>
+      <h1 class="slide-title anim-up anim-up-d1">Batasan & <span class="grad">Kesimpulan</span></h1>
+      <div class="conc-grid">
+        <div class="conc-card anim-scale anim-scale-d1">
+          <div class="conc-ico">🧠</div>
+          <div><div class="conc-title">Logika Tetap Penting</div><div class="conc-body">Tidak wajib hafal sintaks, tapi wajib paham alur logika sistem untuk debugging.</div></div>
+        </div>
+        <div class="conc-card anim-scale anim-scale-d2">
+          <div class="conc-ico">🏗️</div>
+          <div><div class="conc-title">Batasan Skala</div><div class="conc-body">Sangat efisien untuk proyek kecil-menengah, skala raksasa tetap butuh arsitek manusia.</div></div>
+        </div>
+        <div class="conc-card anim-scale anim-scale-d3">
+          <div class="conc-ico">✨</div>
+          <div><div class="conc-title">Kesimpulan</div><div class="conc-body">Vibe coding mendemokratisasi teknologi. Siapa pun bisa menjadi kreator aplikasi sekarang!</div></div>
+        </div>
+      </div>
+      <div class="conc-final anim-up anim-up-d4">Siapa pun bisa menjadi kreator aplikasi sekarang! 🚀</div>
+    </section>
+
+  </div>
+
+  <div class="controls">
+    <button class="ctrl-btn" id="prevBtn" disabled>‹ <span class="lbl">Previous</span></button>
+    <button class="ctrl-btn primary" id="nextBtn"><span class="lbl">Next</span> ›</button>
+  </div>
+  <button class="pdf-btn" onclick="handlePrint()" title="Download PDF">⬇</button>
+</div>
+
+<script>
+// ─── Print handler: strip problematic inline colors before print ───
+function handlePrint() {
+  const saved = [];
+  document.querySelectorAll('[style*="color"], .grad, .grad-warm, .grad-cool').forEach(el => {
+    saved.push({ el, color: el.style.color, bgClip: el.style.webkitBackgroundClip || el.style.backgroundClip });
+    el.dataset.printOrig = el.style.color || '';
+    el.style.setProperty('color', '#111', 'important');
+    el.style.webkitBackgroundClip = 'unset';
+    el.style.backgroundClip = 'unset';
+    el.style.background = 'none';
+  });
+  // Also strip any color from inline style attributes on slide content
+  document.querySelectorAll('.slide *[style*="color"], .slide *[style*="color"]').forEach(el => {
+    el.style.setProperty('color', '#333', 'important');
+  });
+  setTimeout(() => { window.print(); }, 50);
+}
+window.addEventListener('afterprint', () => {
+  document.querySelectorAll('[data-print-orig]').forEach(el => {
+    const orig = el.dataset.printOrig;
+    if (orig && orig !== '') { el.style.color = orig; }
+    el.style.webkitBackgroundClip = '';
+    el.style.backgroundClip = '';
+    el.style.background = '';
+    delete el.dataset.printOrig;
+  });
+});
+
+// ─── Floating orbs ───
+const cvs = document.getElementById('orbCanvas');
+const ctx = cvs.getContext('2d');
+let W, H, orbs, mouse = {x:.5,y:.5};
+
+function resize() {
+  W = cvs.width = window.innerWidth;
+  H = cvs.height = window.innerHeight;
+}
+function initOrbs() {
+  orbs = Array.from({length:4}, (_,i) => ({
+    x: Math.random()*W, y: Math.random()*H,
+    r: 120 + Math.random()*200,
+    dx: (Math.random()-.5)*0.3,
+    dy: (Math.random()-.5)*0.3,
+    hue: i === 0 ? 140 : i === 1 ? 210 : i === 2 ? 260 : 30,
+    alpha: 0.03 + Math.random()*0.02,
+  }));
+}
+function draw() {
+  ctx.clearRect(0,0,W,H);
+  orbs.forEach(o => {
+    o.x += o.dx + (mouse.x-.5)*0.15;
+    o.y += o.dy + (mouse.y-.5)*0.15;
+    if (o.x < -o.r) o.x = W+o.r; if (o.x > W+o.r) o.x = -o.r;
+    if (o.y < -o.r) o.y = H+o.r; if (o.y > H+o.r) o.y = -o.r;
+    const g = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, o.r);
+    g.addColorStop(0, `hsla(${o.hue},70%,60%,${o.alpha*1.5})`);
+    g.addColorStop(.5, `hsla(${o.hue},70%,50%,${o.alpha})`);
+    g.addColorStop(1, `hsla(${o.hue},70%,40%,0)`);
+    ctx.fillStyle = g;
+    ctx.fillRect(o.x-o.r, o.y-o.r, o.r*2, o.r*2);
+  });
+  requestAnimationFrame(draw);
+}
+window.addEventListener('resize', () => { resize(); initOrbs(); });
+document.addEventListener('mousemove', e => { mouse = {x: e.clientX/W, y: e.clientY/H}; });
+resize(); initOrbs(); draw();
+
+// ─── Slide navigation ───
+const slides = Array.from(document.querySelectorAll('.slide'));
+const total = slides.length;
+let cur = 0;
+
+const progFill = document.getElementById('progFill');
+const curNum = document.getElementById('curNum');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+
+function render() {
+  slides.forEach((s,i) => s.classList.toggle('active', i===cur));
+  progFill.style.width = ((cur+1)/total*100)+'%';
+  curNum.textContent = String(cur+1).padStart(2,'0');
+  prevBtn.disabled = cur===0;
+  nextBtn.disabled = cur===total-1;
+  nextBtn.querySelector('.lbl').textContent = cur===total-1 ? 'Selesai' : 'Next';
+}
+function goTo(i) {
+  cur = Math.max(0, Math.min(total-1, i));
+  render();
+}
+prevBtn.addEventListener('click', () => goTo(cur-1));
+nextBtn.addEventListener('click', () => goTo(cur+1));
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight'||e.key==='ArrowDown') { e.preventDefault(); goTo(cur+1); }
+  if (e.key==='ArrowLeft'||e.key==='ArrowUp') { e.preventDefault(); goTo(cur-1); }
+});
+render();
+
+// ─── Workflow interactivity ───
+const flowData = [
+  {n:'01', name:'Ide', icon:'💭', detail:'<b>Ide (Konsep)</b> — Menentukan konsep aplikasi apa yang ingin dibangun, termasuk tujuan dan target pengguna.'},
+  {n:'02', name:'Prompting', icon:'⌨', detail:'<b>Prompting (Perintah)</b> — Menulis instruksi dalam bahasa alami kepada AI, menjelaskan apa yang dibutuhkan.'},
+  {n:'03', name:'Generate', icon:'⚙', detail:'<b>Generate (AI Code)</b> — AI menulis kode secara otomatis berdasarkan instruksi yang diberikan.'},
+  {n:'04', name:'Testing', icon:'▶', detail:'<b>Testing (Uji Coba)</b> — Menjalankan dan menguji coba aplikasi untuk melihat apakah sesuai harapan.'},
+  {n:'05', name:'Iterasi', icon:'↻', detail:'<b>Iterasi (Perbaikan via chat)</b> — Melakukan perbaikan dan penyempurnaan melalui percakapan lanjutan dengan AI.'}
+];
+const flowWrap = document.getElementById('flowWrap');
+const flowDetail = document.getElementById('flowDetail');
+const flowFill = document.getElementById('flowFill');
+
+flowData.forEach((f, idx) => {
+  const step = document.createElement('div');
+  step.className = 'f-step';
+  step.innerHTML = `<div class="f-circle">${f.icon}</div><div class="f-label">${f.name}</div>`;
+  step.addEventListener('click', () => activateFlow(idx));
+  flowWrap.appendChild(step);
+});
+const fSteps = Array.from(flowWrap.querySelectorAll('.f-step'));
+
+function activateFlow(idx) {
+  fSteps.forEach((s,i) => s.classList.toggle('on', i===idx));
+  flowDetail.innerHTML = flowData[idx].detail;
+  flowFill.style.width = ((idx+1)/flowData.length*100)+'%';
+}
+activateFlow(0);
+
+// ─── Checklist ───
+document.querySelectorAll('.demo-list li').forEach(li => {
+  li.addEventListener('click', () => li.classList.toggle('done'));
+});
+</script>
+</body>
+</html>
