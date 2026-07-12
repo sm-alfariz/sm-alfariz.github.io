@@ -1,7 +1,7 @@
 const COLORS = {
-  green:  { border:'#39FF14', text:'#39FF14', bg:'rgba(57,255,20,.05)', badge:'rgba(57,255,20,.1)' },
-  cyan:   { border:'#00E5FF', text:'#00E5FF', bg:'rgba(0,229,255,.05)', badge:'rgba(0,229,255,.1)' },
-  purple: { border:'#B026FF', text:'#B026FF', bg:'rgba(176,38,255,.05)', badge:'rgba(176,38,255,.1)' },
+  green:  { border:'var(--green)', text:'var(--green)', bg:'rgba(57,255,20,.05)', badge:'rgba(57,255,20,.1)' },
+  cyan:   { border:'var(--cyan)', text:'var(--cyan)', bg:'rgba(0,229,255,.05)', badge:'rgba(0,229,255,.1)' },
+  purple: { border:'var(--purple)', text:'var(--purple)', bg:'rgba(176,38,255,.05)', badge:'rgba(176,38,255,.1)' },
 };
 function clr(name){return COLORS[name]||COLORS.green}
 
@@ -10,18 +10,18 @@ let currentSlide = 0;
 function renderCategoryHeader(slide){
   const c=slide.content, co=clr(c.color);
   return `<div class="slide-enter" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative;padding:20px">
-    <div class="corner-accent corner-tl" style="border-color:${co.border}20"></div>
-    <div class="corner-accent corner-br" style="border-color:${co.border}20"></div>
-    <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:100px;margin-bottom:24px;background:${co.border}10;border:1px solid ${co.border}20">
+    <div class="corner-accent corner-tl" style="border-color:color-mix(in srgb, ${co.border} 12%, transparent)"></div>
+    <div class="corner-accent corner-br" style="border-color:color-mix(in srgb, ${co.border} 12%, transparent)"></div>
+    <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 14px;border-radius:100px;margin-bottom:24px;background:color-mix(in srgb, ${co.border} 6%, transparent);border:1px solid color-mix(in srgb, ${co.border} 12%, transparent)">
       <span style="font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:2px;color:${co.border}">Kategori ${c.num}</span>
     </div>
     <h2 style="font-size:clamp(28px,5vw,52px);font-weight:900;margin-bottom:14px;line-height:1.15">${c.name}</h2>
-    <p style="color:#8E9AA6;font-size:clamp(13px,1.5vw,16px);max-width:500px;margin-bottom:28px;line-height:1.6">${c.desc}</p>
-    <div style="display:inline-flex;align-items:center;gap:12px;padding:12px 28px;border-radius:14px;background:${co.border}08;border:1px solid ${co.border}15">
+    <p style="color:var(--text-dim);font-size:clamp(13px,1.5vw,16px);max-width:500px;margin-bottom:28px;line-height:1.6">${c.desc}</p>
+    <div style="display:inline-flex;align-items:center;gap:12px;padding:12px 28px;border-radius:14px;background:color-mix(in srgb, ${co.border} 3%, transparent);border:1px solid color-mix(in srgb, ${co.border} 9%, transparent)">
       <span style="font-size:28px;font-weight:900;font-family:'JetBrains Mono',monospace;color:${co.border}">${c.count}</span>
-      <span style="color:#8E9AA6;font-size:14px">istilah dalam kategori ini</span>
+      <span style="color:var(--text-dim);font-size:14px">istilah dalam kategori ini</span>
     </div>
-    <div style="margin-top:32px;display:flex;align-items:center;gap:6px;color:#8E9AA6;font-size:12px;font-family:'JetBrains Mono',monospace">
+    <div style="margin-top:32px;display:flex;align-items:center;gap:6px;color:var(--text-dim);font-size:12px;font-family:'JetBrains Mono',monospace">
       <span style="color:${co.border};animation:pulseGlow 2s ease-in-out infinite">▼</span>
       <span>Next untuk mulai</span>
     </div>
@@ -38,30 +38,30 @@ function renderTerm(slide){
   if(c.tools) extras.push({label:'🔧 Popular Tools',text:c.tools});
   return `<div class="slide-enter" style="height:100%;display:flex;flex-direction:column;justify-content:center;max-width:800px;margin:0 auto;width:100%;padding:12px 16px;overflow-y:auto">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap">
-      <span class="num-badge" style="background:${co.badge};color:${co.text};border:1px solid ${co.border}30">${String(c.num).padStart(2,'0')}</span>
-      <span style="color:#8E9AA6;font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase">${c.category}</span>
+      <span class="num-badge" style="background:${co.badge};color:${co.text};border:1px solid color-mix(in srgb, ${co.border} 19%, transparent)">${String(c.num).padStart(2,'0')}</span>
+      <span style="color:var(--text-dim);font-size:11px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase">${c.category}</span>
       <span style="color:rgba(142,154,166,.2);font-size:12px">|</span>
-      <span style="color:#8E9AA6;font-size:12px;font-family:'JetBrains Mono',monospace">${c.title}</span>
+      <span style="color:var(--text-dim);font-size:12px;font-family:'JetBrains Mono',monospace">${c.title}</span>
     </div>
     <h3 class="term-title" style="font-size:clamp(22px,3.5vw,36px);font-weight:900;margin-bottom:14px;line-height:1.15">${c.title}</h3>
-    <div style="border-radius:12px;padding:14px 18px;margin-bottom:10px;background:${co.bg};border:1px solid ${co.border}15">
+    <div style="border-radius:12px;padding:14px 18px;margin-bottom:10px;background:${co.bg};border:1px solid color-mix(in srgb, ${co.border} 9%, transparent)">
       <span style="font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase;margin-bottom:6px;display:block;color:${co.border}">📖 Definisi</span>
-      <p class="term-body" style="color:#8E9AA6;line-height:1.7;font-size:clamp(13px,1.3vw,15px)">${c.def}</p>
+      <p class="term-body" style="color:var(--text-dim);line-height:1.7;font-size:clamp(13px,1.3vw,15px)">${c.def}</p>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px;width:100%">
       ${extras.slice(0,2).map(sec => `
-        <div class="card-hover" style="border-radius:12px;padding:12px 16px;background:${co.bg};border:1px solid ${co.border}10;position:relative;overflow:hidden">
-          <div class="card-glow" style="position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,${co.border}05);opacity:0;transition:opacity .4s;pointer-events:none"></div>
+        <div class="card-hover" style="border-radius:12px;padding:12px 16px;background:${co.bg};border:1px solid color-mix(in srgb, ${co.border} 6%, transparent);position:relative;overflow:hidden">
+          <div class="card-glow" style="position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,color-mix(in srgb, ${co.border} 2%, transparent));opacity:0;transition:opacity .4s;pointer-events:none"></div>
           <span style="font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;display:block;color:${co.border}">${sec.label}</span>
-          <p class="term-body" style="color:#8E9AA6;font-size:clamp(12px,1.2vw,14px);line-height:1.6;position:relative;z-index:1">${sec.text}</p>
+          <p class="term-body" style="color:var(--text-dim);font-size:clamp(12px,1.2vw,14px);line-height:1.6;position:relative;z-index:1">${sec.text}</p>
         </div>
       `).join('')}
     </div>
     ${extras.length>2?`
-    <div class="card-hover" style="margin-top:8px;border-radius:12px;padding:12px 16px;background:${co.bg};border:1px solid ${co.border}10;position:relative;overflow:hidden">
-      <div class="card-glow" style="position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,${co.border}05);opacity:0;transition:opacity .4s;pointer-events:none"></div>
+    <div class="card-hover" style="margin-top:8px;border-radius:12px;padding:12px 16px;background:${co.bg};border:1px solid color-mix(in srgb, ${co.border} 6%, transparent);position:relative;overflow:hidden">
+      <div class="card-glow" style="position:absolute;inset:0;background:linear-gradient(135deg,transparent 60%,color-mix(in srgb, ${co.border} 2%, transparent));opacity:0;transition:opacity .4s;pointer-events:none"></div>
       <span style="font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;display:block;color:${co.border}">${extras[2].label}</span>
-      <p class="term-body" style="color:#8E9AA6;font-size:clamp(12px,1.2vw,14px);line-height:1.6;position:relative;z-index:1">${extras[2].text}</p>
+      <p class="term-body" style="color:var(--text-dim);font-size:clamp(12px,1.2vw,14px);line-height:1.6;position:relative;z-index:1">${extras[2].text}</p>
     </div>`:''}
   </div>`;
 }
@@ -74,28 +74,28 @@ function renderClosing(slide){
     <div class="corner-accent corner-bl" style="border-color:rgba(176,38,255,.2)"></div>
     <div class="corner-accent corner-br" style="border-color:rgba(57,255,20,.2)"></div>
     <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;border:1px solid rgba(57,255,20,.2);background:rgba(57,255,20,.05);margin-bottom:20px">
-      <span style="width:8px;height:8px;border-radius:50%;background:#39FF14;animation:pulseGlow 2s ease-in-out infinite;display:inline-block"></span>
-      <span style="color:#39FF14;font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:2px;text-transform:uppercase">Complete</span>
+      <span style="width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulseGlow 2s ease-in-out infinite;display:inline-block"></span>
+      <span style="color:var(--green);font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:2px;text-transform:uppercase">Complete</span>
     </div>
     <h2 style="font-size:clamp(24px,4vw,42px);font-weight:900;margin-bottom:12px;line-height:1.2">${c.title}</h2>
-    <p style="color:#8E9AA6;margin-bottom:24px;font-size:clamp(14px,1.5vw,16px)">${c.message}</p>
+    <p style="color:var(--text-dim);margin-bottom:24px;font-size:clamp(14px,1.5vw,16px)">${c.message}</p>
     <div style="width:100%;max-width:500px;margin-bottom:20px">
       ${c.steps.map((s,i)=>{
         const link = 'part-4.html';
-        return `<a href="${link}" style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;border:1px solid #1A1F2E;background:#0A0E17;text-decoration:none;transition:all .3s;margin-bottom:8px" class="card-hover" onmouseover="this.style.borderColor='rgba(176,38,255,.3)'" onmouseout="this.style.borderColor='#1A1F2E'">
-          <span style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;font-family:'JetBrains Mono',monospace;background:rgba(176,38,255,.1);color:#B026FF;flex-shrink:0">${s.step}</span>
+        return `<a href="${link}" style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;border:1px solid var(--surface-border);background:var(--surface);text-decoration:none;transition:all .3s;margin-bottom:8px" class="card-hover" onmouseover="this.style.borderColor='rgba(176,38,255,.3)'" onmouseout="this.style.borderColor='var(--surface-border)'">
+           <span style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;font-family:'JetBrains Mono',monospace;background:rgba(176,38,255,.1);color:var(--purple);flex-shrink:0">${s.step}</span>
           <div style="text-align:left;flex:1">
             <h4 style="color:#fff;font-weight:600;font-size:13px">${s.title}</h4>
-            <p style="color:#8E9AA6;font-size:11px;margin-top:2px">${s.detail}</p>
+            <p style="color:var(--text-dim);font-size:11px;margin-top:2px">${s.detail}</p>
           </div>
           <span style="color:rgba(142,154,166,.3);font-size:16px;transition:transform .3s;flex-shrink:0" class="part-arrow">→</span>
         </a>`;
       }).join('')}
     </div>
-    <p style="color:#8E9AA6;font-size:13px;max-width:400px;margin-bottom:24px">${c.closing}</p>
+    <p style="color:var(--text-dim);font-size:13px;max-width:400px;margin-bottom:24px">${c.closing}</p>
     <div style="display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
-      <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:10px;background:#0A0E17;border:1px solid #1A1F2E;color:#8E9AA6;text-decoration:none;font-size:13px;font-weight:600;transition:all .3s;font-family:'Inter',sans-serif" onmouseover="this.style.borderColor='rgba(57,255,20,.4)';this.style.color='#39FF14'" onmouseout="this.style.borderColor='#1A1F2E';this.style.color='#8E9AA6'">← Kembali ke Index</a>
-      <a href="part-4.html" style="display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:10px;background:rgba(176,38,255,.1);border:1px solid rgba(176,38,255,.3);color:#B026FF;text-decoration:none;font-size:13px;font-weight:600;transition:all .3s;font-family:'Inter',sans-serif;text-shadow:0 0 10px rgba(176,38,255,.3)" onmouseover="this.style.background='rgba(176,38,255,.2)';this.style.borderColor='#B026FF'" onmouseout="this.style.background='rgba(176,38,255,.1)';this.style.borderColor='rgba(176,38,255,.3)'">Lanjut ke Part 4 →</a>
+       <a href="index.html" style="display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:10px;background:var(--surface);border:1px solid var(--surface-border);color:var(--text-dim);text-decoration:none;font-size:13px;font-weight:600;transition:all .3s;font-family:'Inter',sans-serif" onmouseover="this.style.borderColor='rgba(57,255,20,.4)';this.style.color='var(--green)'" onmouseout="this.style.borderColor='var(--surface-border)';this.style.color='var(--text-dim)'">← Kembali ke Index</a>
+      <a href="part-4.html" style="display:inline-flex;align-items:center;gap:8px;padding:10px 24px;border-radius:10px;background:rgba(176,38,255,.1);border:1px solid rgba(176,38,255,.3);color:var(--purple);text-decoration:none;font-size:13px;font-weight:600;transition:all .3s;font-family:'Inter',sans-serif;text-shadow:0 0 10px rgba(176,38,255,.3)" onmouseover="this.style.background='rgba(176,38,255,.2)';this.style.borderColor='var(--purple)'" onmouseout="this.style.background='rgba(176,38,255,.1)';this.style.borderColor='rgba(176,38,255,.3)'">Lanjut ke Part 4 →</a>
     </div>
   </div>`;
 }
@@ -139,7 +139,7 @@ function updateCounter(){
 
 function updateDots(){
   document.querySelectorAll('#dotContainer button').forEach((dot,i)=>{
-    dot.style.cssText=`width:${i===currentSlide?'10':'6'}px;height:6px;border-radius:${i===currentSlide?'3':'50%'};border:none;cursor:pointer;transition:all .3s;background:${i===currentSlide?'#B026FF':'rgba(142,154,166,.2)'};box-shadow:${i===currentSlide?'0 0 8px rgba(176,38,255,.6)':'none'}`;
+    dot.className=i===currentSlide?'dot-active':'dot-inactive';
   });
 }
 
@@ -149,7 +149,7 @@ function buildDots(){
   dc.innerHTML='';
   slides.forEach((_,i)=>{
     const dot=document.createElement('button');
-    dot.style.cssText='width:6px;height:6px;border-radius:50%;border:none;cursor:pointer;transition:all .3s;background:rgba(142,154,166,.2)';
+    dot.className='dot-inactive';
     dot.dataset.index=i;
     dot.onclick=()=>goTo(i);
     dc.appendChild(dot);
@@ -170,7 +170,7 @@ function renderCurrent(){
 function createParticles(){
   const p=document.getElementById('particles');
   if(!p) return;
-  const colors=['#39FF14','#00E5FF','#B026FF'];
+  const colors=['var(--green)','var(--cyan)','var(--purple)'];
   for(let i=0;i<35;i++){
     const el=document.createElement('div');
     el.className='particle';
@@ -193,7 +193,7 @@ function init(){
     {type:'term',content:{num:19,title:'Windsurf',category:'Tools',color:'purple',def:'AI code editor dari Codeium dengan "Cascade" — AI assistant agentic yang bisa understand, plan, dan execute multi-step coding tasks secara lebih autonomous.',analogy:'Kalau Cursor seperti co-pilot yang kamu instruksikan step by step, Windsurf dengan Cascade lebih seperti partner yang kamu kasih bigger goal dan dia figure out steps-nya.',features:'Cascade (multi-step autonomous) · Flows (persistent context) · Supercomplete (advanced autocomplete) · Command Execution',tips:'Gunakan Cascade untuk multi-step tasks — designed for autonomy. Cocok untuk project scaffolding dan large-scale refactoring.'}},
     {type:'term',content:{num:20,title:'v0 (by Vercel)',category:'Tools',color:'purple',def:'AI-powered UI generation tool dari Vercel yang bisa generate React/Next.js components dari text descriptions atau image references — fokus pada UI/frontend generation.',analogy:'Seperti magic converter dari design ke code. Kamu punya screenshot atau design di kepala, describe atau upload, v0 generates React component dengan Tailwind CSS.',tips:'Start dengan text, refine dengan iterations. Gunakan untuk rapid prototyping. Combine dengan Cursor — generate di v0, customize di Cursor.',mistakes:'Expecting production-ready code untuk complex apps. Not iterating enough — first output rarely perfect.'}},
     {type:'term',content:{num:21,title:'Bolt.new',category:'Tools',color:'purple',def:'AI-powered full-stack app builder yang bisa create, edit, dan deploy applications entirely dari browser. Tidak perlu local development setup.',analogy:'Seperti punya developer + server + deployment pipeline dalam satu browser tab. Describe app, Bolt build everything, dapat working app dengan shareable URL.',tips:'Great untuk MVPs dan prototypes — validate ideas fast. Gunakan untuk learning projects — experiment without setup. Quick demos untuk clients.',mistakes:'Using untuk complex production apps → better for prototypes. Not understanding generated code → learn from what Bolt creates. No version control → changes ephemeral.'}},
-    {type:'closing',content:{title:'Selesai! Part 3 — <span style="color:#B026FF">Tools</span>',message:'Kamu sudah mengenal 6 tools utama untuk vibe coding.',steps:[{step:'→',title:'Lanjut ke Part 4',detail:'Workflow & Techniques — 5 istilah tentang cara kerja dan teknik'}],closing:'Next: Workflow & Techniques — buka part-4.html',tagline:'Lanjut ke Part 4 →'}}
+    {type:'closing',content:{title:'Selesai! Part 3 — <span style="color:var(--purple)">Tools</span>',message:'Kamu sudah mengenal 6 tools utama untuk vibe coding.',steps:[{step:'→',title:'Lanjut ke Part 4',detail:'Workflow & Techniques — 5 istilah tentang cara kerja dan teknik'}],closing:'Next: Workflow & Techniques — buka part-4.html',tagline:'Lanjut ke Part 4 →'}}
   );
   currentSlide=0;
   buildDots();
@@ -240,9 +240,9 @@ function init(){
 }
 
 const slides = [];
-document.addEventListener('DOMContentLoaded',()=>{createParticles();init()});
-if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>{createParticles();init()})
-else {createParticles();init()}
+function boot(){ createParticles(); init(); }
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot);
+else boot();
 
 document.addEventListener('mouseover',e=>{
   const t=e.target.closest('#prevBtn, #nextBtn');
@@ -250,5 +250,5 @@ document.addEventListener('mouseover',e=>{
 });
 document.addEventListener('mouseout',e=>{
   const t=e.target.closest('#prevBtn, #nextBtn');
-  if(t){t.style.borderColor='#1A1F2E';t.style.color='#8E9AA6'}
+  if(t){t.style.borderColor='var(--surface-border)';t.style.color='var(--text-dim)'}
 });

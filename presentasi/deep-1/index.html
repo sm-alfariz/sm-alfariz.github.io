@@ -7,9 +7,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<script src="js/theme.js"></script>
 <style>
 @font-face{font-family:'JetBrains Mono Nerd';font-style:normal;font-weight:700;font-display:swap;src:url(https://cdn.jsdelivr.net/gh/Nick2bad4u/nerd-fonts-woff2@v1.0.4/fonts/woff2/JetBrainsMono/JetBrainsMonoNerdFont-Bold.woff2)format('woff2')}
-:root{--bg:#000000;--card:#0A0E17;--card-border:#1A1F2E;--text:#FFFFFF;--text-dim:#8E9AA6;--green:#39FF14;--cyan:#00E5FF;--purple:#B026FF}
+:root{--bg:#000000;--card:#0A0E17;--card-border:#1A1F2E;--surface:#0A0E17;--surface-border:#1A1F2E;--text:#FFFFFF;--text-dim:#8E9AA6;--green:#39FF14;--cyan:#00E5FF;--purple:#B026FF}
+[data-theme="light"]{--bg:#eef1f5;--card:#ffffff;--card-border:#d4dce4;--surface:#ffffff;--surface-border:#d4dce4;--text:#0b0e14;--text-dim:#2b323c;--green:#1a9e0b;--cyan:#0a82b0;--purple:#8e1fc4}
 *{margin:0;padding:0;box-sizing:border-box}
 body{
   font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
@@ -54,6 +56,10 @@ body{
 ::-webkit-scrollbar-track{background:transparent}
 ::-webkit-scrollbar-thumb{background:rgba(57,255,20,.3);border-radius:2px}
 ::-webkit-scrollbar-thumb:hover{background:rgba(57,255,20,.5)}
+.theme-toggle{position:fixed;left:16px;bottom:84px;z-index:1000;width:42px;height:42px;border-radius:50%;border:1px solid var(--surface-border);background:var(--surface);color:var(--text);cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,.25);transition:all .3s;font-size:18px;line-height:1}
+.theme-toggle:hover{transform:translateY(-2px);border-color:var(--text-dim);box-shadow:0 6px 20px rgba(0,0,0,.35)}
+.theme-toggle:focus-visible{outline:2px solid var(--text-dim);outline-offset:2px}
+@media(max-width:639px){.theme-toggle{bottom:80px}}
 </style>
 </head>
 <body>
@@ -75,7 +81,7 @@ body{
     </div>
     <div style="display:flex;align-items:center;gap:12px">
       <div style="width:10px;height:10px;border-radius:50%;background:var(--green);animation:pulseGlow 2s ease-in-out infinite"></div>
-      <span style="color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">Neno Theme</span>
+      <span style="color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">Neon Theme</span>
     </div>
   </header>
 
@@ -135,8 +141,8 @@ body{
     </section>
 
     <!-- Part Cards -->
-    <h3 style="font-size:clamp(20px,3vw,32px);font-weight:900;margin-bottom:24px;text-align:center">Pilih <span style="color:var(--green)">Kategori</span></h3>
-    <p style="color:var(--text-dim);text-align:center;margin-bottom:36px;font-size:14px;max-width:500px;margin-left:auto;margin-right:auto">Setiap kategori berisi slide interaktif dengan definisi, analogi, tips, dan contoh praktis</p>
+    <h3 style="font-size:clamp(20px,3vw,32px);font-weight:900;margin-bottom:24px;text-align:center">Modul <span style="color:var(--green)">Sequence</span></h3>
+    <p style="color:var(--text-dim);text-align:center;margin-bottom:36px;font-size:14px;max-width:500px;margin-left:auto;margin-right:auto">Setiap Modul berisi slide interaktif dengan definisi, analogi, tips, dan contoh praktis, pelajar secara Sequence agar mudah</p>
 
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
       <!-- Part 1 -->
@@ -244,7 +250,7 @@ body{
     el.style.animation='float '+(8+Math.random()*12)+'s '+(Math.random()*10)+'s infinite';
     el.style.width=(1+Math.random()*2)+'px';
     el.style.height=el.style.width;
-    el.style.background=['#39FF14','#00E5FF','#B026FF'][Math.floor(Math.random()*3)];
+    el.style.background=['var(--green)','var(--cyan)','var(--purple)'][Math.floor(Math.random()*3)];
     p.appendChild(el);
   }
   // Orbs

@@ -1,7 +1,7 @@
 const COLORS = {
-  green: { border:'#39FF14', text:'#39FF14', bg:'rgba(57,255,20,.08)', badge:'rgba(57,255,20,.15)', badgeText:'#39FF14' },
-  cyan:  { border:'#00E5FF', text:'#00E5FF', bg:'rgba(0,229,255,.08)', badge:'rgba(0,229,255,.15)', badgeText:'#00E5FF' },
-  purple:{ border:'#B026FF', text:'#B026FF', bg:'rgba(176,38,255,.08)', badge:'rgba(176,38,255,.15)', badgeText:'#B026FF' }
+  green: { border:'var(--green)', text:'var(--green)', bg:'rgba(57,255,20,.08)', badge:'rgba(57,255,20,.15)', badgeText:'var(--green)' },
+  cyan:  { border:'var(--cyan)', text:'var(--cyan)', bg:'rgba(0,229,255,.08)', badge:'rgba(0,229,255,.15)', badgeText:'var(--cyan)' },
+  purple:{ border:'var(--purple)', text:'var(--purple)', bg:'rgba(176,38,255,.08)', badge:'rgba(176,38,255,.15)', badgeText:'var(--purple)' }
 };
 
 const slides = [
@@ -27,7 +27,7 @@ const slides = [
     action:'Buka part-4.html dan part-5.html untuk memahami workflow dan best practices. Terapkan dalam project sesungguhnya.'
   }},
   { type:'closing', content:{
-    title:'Selesai! Part 6 — <span style="color:#B026FF">Learning Journey</span>',
+    title:'Selesai! Part 6 — <span style="color:var(--purple)">Learning Journey</span>',
     message:'Kamu sudah memiliki roadmap 4 minggu untuk menguasai vibe coding. Konsisten dan praktik setiap hari!',
     steps:[
       { step:'→', title:'Kembali ke Index', detail:'Lihat semua kategori dan mulai perjalananmu' }
@@ -49,7 +49,7 @@ function createParticles(){
     p.style.top=Math.random()*100+'%';
     p.style.animationDuration=(8+Math.random()*12)+'s';
     p.style.animationDelay=(Math.random()*15)+'s';
-    const colors=['#39FF14','#00E5FF','#B026FF'];
+    const colors=['var(--green)','var(--cyan)','var(--purple)'];
     p.style.background=colors[Math.floor(Math.random()*3)];
     p.style.boxShadow='0 0 '+(4+Math.floor(Math.random()*6))+'px '+p.style.background;
     container.appendChild(p);
@@ -65,22 +65,22 @@ function renderCategoryHeader(c){
     <p>${c.desc}</p>
     <div class="week-grid">
       <div class="week-item">
-        <div class="week-num" style="color:#39FF14">1</div>
+        <div class="week-num" style="color:var(--green)">1</div>
         <div class="week-title">Fundamental</div>
         <div class="week-desc">8 istilah dasar</div>
       </div>
       <div class="week-item">
-        <div class="week-num" style="color:#00E5FF">2</div>
+        <div class="week-num" style="color:var(--cyan)">2</div>
         <div class="week-title">Prompting</div>
         <div class="week-desc">7 teknik prompting</div>
       </div>
       <div class="week-item">
-        <div class="week-num" style="color:#B026FF">3</div>
+        <div class="week-num" style="color:var(--purple)">3</div>
         <div class="week-title">Tools</div>
         <div class="week-desc">Fokus Cursor</div>
       </div>
       <div class="week-item">
-        <div class="week-num" style="color:#39FF14">4</div>
+        <div class="week-num" style="color:var(--green)">4</div>
         <div class="week-title">Workflow</div>
         <div class="week-desc">Workflow & quality</div>
       </div>

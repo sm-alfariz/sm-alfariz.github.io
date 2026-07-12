@@ -1,8 +1,8 @@
 // ── COLORS ──
 const COLORS = {
-  green:  { border: '#39FF14', text: '#39FF14', bg: 'rgba(57,255,20,0.05)', badge: 'rgba(57,255,20,0.1)' },
-  cyan:   { border: '#00E5FF', text: '#00E5FF', bg: 'rgba(0,229,255,0.05)', badge: 'rgba(0,229,255,0.1)' },
-  purple: { border: '#B026FF', text: '#B026FF', bg: 'rgba(176,38,255,0.05)', badge: 'rgba(176,38,255,0.1)' },
+  green:  { border: 'var(--green)', text: 'var(--green)', bg: 'rgba(57,255,20,0.05)', badge: 'rgba(57,255,20,0.1)' },
+  cyan:   { border: 'var(--cyan)', text: 'var(--cyan)', bg: 'rgba(0,229,255,0.05)', badge: 'rgba(0,229,255,0.1)' },
+  purple: { border: 'var(--purple)', text: 'var(--purple)', bg: 'rgba(176,38,255,0.05)', badge: 'rgba(176,38,255,0.1)' },
 };
 function clr(name) { return COLORS[name] || COLORS.green; }
 
@@ -34,7 +34,7 @@ const slides = [
     mistakes: 'Full autopilot mode → lost control. Approving without reading → rubber stamping. No checkpoints for complex tasks.'
   }},
   { type: 'closing', content: {
-    title: 'Selesai! 🎉<br><span style="color:#39FF14">30 Istilah</span> <span style="color:#8E9AA6">Vibe Coding</span>',
+    title: 'Selesai! 🎉<br><span style="color:var(--green)">30 Istilah</span> <span style="color:var(--text-dim)">Vibe Coding</span>',
     message: 'Kamu sudah menguasai seluruh 30 istilah! Sekarang kamu paham bahasa vibe coding.',
     steps: [
       { step: '01', title: 'Master Fundamentals', detail: 'Vibe coding, AI code editor, Tokens & Context', color: 'green' },
@@ -60,7 +60,7 @@ function createParticles() {
     const size = 1 + Math.random() * 2;
     el.style.width = size + 'px';
     el.style.height = size + 'px';
-    el.style.background = ['#39FF14', '#00E5FF', '#B026FF'][Math.floor(Math.random() * 3)];
+    el.style.background = ['var(--green)', 'var(--cyan)', 'var(--purple)'][Math.floor(Math.random() * 3)];
     p.appendChild(el);
   }
 }
@@ -71,20 +71,20 @@ function renderCategoryHeader(s) {
   const co = clr(c.color);
   return `
   <div class="slide-enter" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;position:relative">
-    <div class="corner-accent corner-tl" style="border-color:${co.border}20"></div>
-    <div class="corner-accent corner-br" style="border-color:${co.border}20"></div>
-    <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;margin-bottom:32px;background:${co.border}10;border:1px solid ${co.border}20">
+    <div class="corner-accent corner-tl" style="border-color:color-mix(in srgb, ${co.border} 12%, transparent)"></div>
+    <div class="corner-accent corner-br" style="border-color:color-mix(in srgb, ${co.border} 12%, transparent)"></div>
+    <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;margin-bottom:32px;background:color-mix(in srgb, ${co.border} 6%, transparent);border:1px solid color-mix(in srgb, ${co.border} 12%, transparent)">
       <span style="font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:2px;color:${co.border}">Kategori ${c.num}</span>
     </div>
     <h2 style="font-size:clamp(1.75rem,5vw,3.5rem);font-weight:900;margin-bottom:16px;line-height:1.2">
       <span style="color:${co.border}">${c.num}.</span> ${c.name}
     </h2>
-    <p style="color:#8E9AA6;font-size:clamp(0.8rem,1.8vw,1.05rem);max-width:520px;text-align:center;margin-bottom:32px">${c.desc}</p>
-    <div style="display:inline-flex;align-items:center;gap:12px;padding:12px 20px;border-radius:12px;background:${co.border}10;border:1px solid ${co.border}15">
+    <p style="color:var(--text-dim);font-size:clamp(0.8rem,1.8vw,1.05rem);max-width:520px;text-align:center;margin-bottom:32px">${c.desc}</p>
+    <div style="display:inline-flex;align-items:center;gap:12px;padding:12px 20px;border-radius:12px;background:color-mix(in srgb, ${co.border} 6%, transparent);border:1px solid color-mix(in srgb, ${co.border} 9%, transparent)">
       <span style="font-size:clamp(1.2rem,3vw,1.75rem);font-weight:900;font-family:'JetBrains Mono',monospace;color:${co.border}">${c.count}</span>
-      <span style="color:#8E9AA6;font-size:clamp(0.7rem,1.4vw,0.85rem)">istilah dalam kategori ini</span>
+      <span style="color:var(--text-dim);font-size:clamp(0.7rem,1.4vw,0.85rem)">istilah dalam kategori ini</span>
     </div>
-    <div style="margin-top:40px;display:flex;align-items:center;gap:8px;color:#8E9AA6;font-size:10px">
+    <div style="margin-top:40px;display:flex;align-items:center;gap:8px;color:var(--text-dim);font-size:10px">
       <span style="animation:blink 1.5s infinite;color:${co.border}">▼</span>
       <span>Next untuk mulai</span>
     </div>
@@ -103,9 +103,9 @@ function renderTerm(s) {
   if (c.examples) extras.push({ label: '📋 Examples', text: c.examples });
 
   function extraCard(sec) {
-    return `<div style="border-radius:12px;padding:16px;border:1px solid ${co.border}10;background:${co.bg}">
+    return `<div style="border-radius:12px;padding:16px;border:1px solid color-mix(in srgb, ${co.border} 6%, transparent);background:${co.bg}">
       <span style="font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:2px;display:block;margin-bottom:8px;color:${co.border}">${sec.label}</span>
-      <p style="color:#8E9AA6;font-size:clamp(0.75rem,1.5vw,0.9rem);line-height:1.6">${sec.text}</p>
+      <p style="color:var(--text-dim);font-size:clamp(0.75rem,1.5vw,0.9rem);line-height:1.6">${sec.text}</p>
     </div>`;
   }
 
@@ -115,22 +115,22 @@ function renderTerm(s) {
   return `
   <div class="slide-enter scroll-content" style="height:100%;max-width:1000px;margin:0 auto;width:100%;padding:8px 0">
     <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
-      <span class="num-badge" style="background:${co.badge};color:${co.text};border:1px solid ${co.border}30">${String(c.num).padStart(2,'0')}</span>
-      <span style="color:#8E9AA6;font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:2px;text-transform:uppercase">${c.category}</span>
+      <span class="num-badge" style="background:${co.badge};color:${co.text};border:1px solid color-mix(in srgb, ${co.border} 19%, transparent)">${String(c.num).padStart(2,'0')}</span>
+      <span style="color:var(--text-dim);font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:2px;text-transform:uppercase">${c.category}</span>
       <span style="color:rgba(142,154,166,0.3);font-size:10px">|</span>
-      <span style="color:#8E9AA6;font-size:10px;font-family:'JetBrains Mono',monospace">${c.title}</span>
+      <span style="color:var(--text-dim);font-size:10px;font-family:'JetBrains Mono',monospace">${c.title}</span>
     </div>
     <h3 style="font-size:clamp(1.25rem,3vw,2.25rem);font-weight:900;margin-bottom:20px;line-height:1.2">${c.title}</h3>
-    <div style="border-radius:12px;padding:20px;border:1px solid ${co.border}15;background:${co.bg};margin-bottom:16px">
+    <div style="border-radius:12px;padding:20px;border:1px solid color-mix(in srgb, ${co.border} 9%, transparent);background:${co.bg};margin-bottom:16px">
       <span style="font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:2px;display:block;margin-bottom:8px;color:${co.border}">📖 Definisi</span>
-      <p style="color:#8E9AA6;font-size:clamp(0.8rem,1.6vw,0.95rem);line-height:1.7">${c.def}</p>
+      <p style="color:var(--text-dim);font-size:clamp(0.8rem,1.6vw,0.95rem);line-height:1.7">${c.def}</p>
     </div>
     ${grid.length ? `<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;margin-bottom:${rest.length ? '12px' : '0'}">
       ${grid.map(extraCard).join('')}
     </div>` : ''}
-    ${rest.map(sec => `<div style="margin-top:12px;border-radius:12px;padding:16px;border:1px solid ${co.border}10;background:${co.bg}">
+    ${rest.map(sec => `<div style="margin-top:12px;border-radius:12px;padding:16px;border:1px solid color-mix(in srgb, ${co.border} 6%, transparent);background:${co.bg}">
       <span style="font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:2px;display:block;margin-bottom:8px;color:${co.border}">${sec.label}</span>
-      <p style="color:#8E9AA6;font-size:clamp(0.75rem,1.5vw,0.9rem);line-height:1.6">${sec.text}</p>
+      <p style="color:var(--text-dim);font-size:clamp(0.75rem,1.5vw,0.9rem);line-height:1.6">${sec.text}</p>
     </div>`).join('')}
   </div>`;
 }
@@ -140,28 +140,28 @@ function renderClosing(s) {
   return `
   <div class="slide-enter scroll-content" style="height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;max-width:900px;margin:0 auto;padding:16px 0">
     <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;border:1px solid rgba(57,255,20,0.2);background:rgba(57,255,20,0.05);margin-bottom:32px">
-      <span style="width:6px;height:6px;border-radius:50%;background:#39FF14;animation:blink 1.5s infinite"></span>
-      <span style="color:#39FF14;font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:2px">Complete</span>
+      <span style="width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 1.5s infinite"></span>
+      <span style="color:var(--green);font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:2px">Complete</span>
     </div>
     <h2 style="font-size:clamp(1.5rem,4vw,3rem);font-weight:900;margin-bottom:16px;line-height:1.2">${c.title}</h2>
-    <p style="color:#8E9AA6;font-size:clamp(0.85rem,1.8vw,1.05rem);margin-bottom:32px">${c.message}</p>
+    <p style="color:var(--text-dim);font-size:clamp(0.85rem,1.8vw,1.05rem);margin-bottom:32px">${c.message}</p>
     <div style="width:100%;max-width:600px;display:flex;flex-direction:column;gap:10px;margin-bottom:24px">
       ${c.steps.map((st, i) => {
         const sCo = clr(st.color);
         return `
-        <div style="display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:12px;border:1px solid #1A1F2E;background:#0A0E17;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);text-align:left"
-             onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='${sCo.border}33'" onmouseout="this.style.transform='';this.style.borderColor='#1A1F2E'">
+        <div style="display:flex;align-items:center;gap:16px;padding:14px 16px;border-radius:12px;border:1px solid var(--surface-border);background:var(--surface);transition:all 0.3s cubic-bezier(0.16,1,0.3,1);text-align:left"
+             onmouseover="this.style.transform='translateY(-2px)';this.style.borderColor='color-mix(in srgb, ${sCo.border} 20%, transparent)'" onmouseout="this.style.transform='';this.style.borderColor='var(--surface-border)'">
           <span style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;font-family:'JetBrains Mono',monospace;flex-shrink:0;background:${sCo.badge};color:${sCo.text}">${st.step}</span>
           <div style="flex:1">
             <h4 style="color:#fff;font-weight:600;font-size:clamp(0.8rem,1.6vw,0.95rem)">${st.title}</h4>
-            <p style="color:#8E9AA6;font-size:clamp(0.7rem,1.3vw,0.8rem)">${st.detail}</p>
+            <p style="color:var(--text-dim);font-size:clamp(0.7rem,1.3vw,0.8rem)">${st.detail}</p>
           </div>
           ${i < 4 ? '<span style="color:rgba(142,154,166,0.3);margin-left:auto">→</span>' : ''}
         </div>`;
       }).join('')}
     </div>
     <div style="font-size:clamp(1.25rem,3vw,2rem);font-weight:900;margin-bottom:32px;text-shadow:0 0 20px rgba(57,255,20,0.3)">${c.tagline}</div>
-    <a href="index.html" class="btn-glow" style="background:linear-gradient(135deg,#00E5FF,#B026FF);color:#fff;box-shadow:0 0 20px rgba(0,229,255,0.3)"
+    <a href="index.html" class="btn-glow" style="background:linear-gradient(135deg,var(--cyan),var(--purple));color:#fff;box-shadow:0 0 20px rgba(0,229,255,0.3)"
        onmouseover="this.style.boxShadow='0 0 40px rgba(0,229,255,0.5)'" onmouseout="this.style.boxShadow='0 0 20px rgba(0,229,255,0.3)'">
       ← Kembali ke Index
     </a>
@@ -173,7 +173,7 @@ function renderSlide(slide, index) {
     case 'category-header': return renderCategoryHeader(slide);
     case 'term': return renderTerm(slide);
     case 'closing': return renderClosing(slide);
-    default: return '<div style="color:#8E9AA6;text-align:center;padding:40px">Unknown slide type</div>';
+    default: return '<div style="color:var(--text-dim);text-align:center;padding:40px">Unknown slide type</div>';
   }
 }
 

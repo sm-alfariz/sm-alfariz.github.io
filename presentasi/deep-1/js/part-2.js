@@ -1,7 +1,7 @@
 const COLORS = {
-  cyan:  { border:'#00E5FF', text:'#00E5FF', bg:'rgba(0,229,255,.08)', badge:'rgba(0,229,255,.15)', badgeText:'#00E5FF' },
-  green: { border:'#39FF14', text:'#39FF14', bg:'rgba(57,255,20,.08)', badge:'rgba(57,255,20,.15)', badgeText:'#39FF14' },
-  purple:{ border:'#B026FF', text:'#B026FF', bg:'rgba(176,38,255,.08)', badge:'rgba(176,38,255,.15)', badgeText:'#B026FF' }
+  cyan:  { border:'var(--cyan)', text:'var(--cyan)', bg:'rgba(0,229,255,.08)', badge:'rgba(0,229,255,.15)', badgeText:'var(--cyan)' },
+  green: { border:'var(--green)', text:'var(--green)', bg:'rgba(57,255,20,.08)', badge:'rgba(57,255,20,.15)', badgeText:'var(--green)' },
+  purple:{ border:'var(--purple)', text:'var(--purple)', bg:'rgba(176,38,255,.08)', badge:'rgba(176,38,255,.15)', badgeText:'var(--purple)' }
 };
 
 const slides = [
@@ -48,7 +48,7 @@ const slides = [
     mistakes:'No context injection → AI makes assumptions. Too much irrelevant → dilutes focus. Outdated context → wrong assumptions. Forgetting types → type errors.'
   }},
   { type:'closing', content:{
-    title:'Selesai! Part 2 — <span style="color:#00E5FF">Prompting</span>',
+    title:'Selesai! Part 2 — <span style="color:var(--cyan)">Prompting</span>',
     message:'Kamu sudah menguasai 7 istilah tentang prompting & communication.',
     steps:[
       { step:'→', title:'Lanjut ke Part 3', detail:'Tools & Environment — 6 istilah tentang alat-alat vibe coding' }
@@ -70,7 +70,7 @@ function createParticles(){
     p.style.top=Math.random()*100+'%';
     p.style.animationDuration=(8+Math.random()*12)+'s';
     p.style.animationDelay=(Math.random()*15)+'s';
-    const colors=['#39FF14','#00E5FF','#B026FF'];
+    const colors=['var(--green)','var(--cyan)','var(--purple)'];
     p.style.background=colors[Math.floor(Math.random()*3)];
     p.style.boxShadow='0 0 '+(4+Math.floor(Math.random()*6))+'px '+p.style.background;
     container.appendChild(p);

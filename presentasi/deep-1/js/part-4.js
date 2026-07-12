@@ -1,8 +1,8 @@
 (function(){
 const COLORS = {
-  green:  { border: '#39FF14', text: '#39FF14', bg: 'rgba(57,255,20,0.05)', badge: 'rgba(57,255,20,0.1)' },
-  cyan:   { border: '#00E5FF', text: '#00E5FF', bg: 'rgba(0,229,255,0.05)', badge: 'rgba(0,229,255,0.1)' },
-  purple: { border: '#B026FF', text: '#B026FF', bg: 'rgba(176,38,255,0.05)', badge: 'rgba(176,38,255,0.1)' },
+  green:  { border: 'var(--green)', text: 'var(--green)', bg: 'rgba(57,255,20,0.05)', badge: 'rgba(57,255,20,0.1)' },
+  cyan:   { border: 'var(--cyan)', text: 'var(--cyan)', bg: 'rgba(0,229,255,0.05)', badge: 'rgba(0,229,255,0.1)' },
+  purple: { border: 'var(--purple)', text: 'var(--purple)', bg: 'rgba(176,38,255,0.05)', badge: 'rgba(176,38,255,0.1)' },
 };
 
 const CL = COLORS.green;
@@ -40,14 +40,14 @@ const slides = [
     mistakes: 'Micromanaging agent → defeats the purpose. Vague goals tanpa constraints → unexpected changes. Not reviewing final output → miss issues.'
   }},
   { type: 'closing', content: {
-    title: 'Selesai! Part 4 — <span style="color:#39FF14">Workflow</span>',
+    title: 'Selesai! Part 4 — <span style="color:var(--green)">Workflow</span>',
     message: 'Kamu sudah menguasai 5 istilah tentang workflow & techniques.',
     steps: [
       { step: '→', title: 'Lanjut ke Part 5', detail: 'Quality & Best Practices — 4 istilah tentang menjaga kualitas output AI coding', link: 'part-5.html' },
       { step: '←', title: 'Kembali ke Index', detail: 'Lihat semua part yang tersedia', link: 'index.html' },
     ],
     closing: 'Next: Quality & Best Practices — buka part-5.html',
-    tagline: '<a href="part-5.html" style="color:#39FF14;text-decoration:none;text-shadow:0 0 20px rgba(57,255,20,0.3)">Lanjut ke Part 5 →</a>'
+    tagline: '<a href="part-5.html" style="color:var(--green);text-decoration:none;text-shadow:0 0 20px rgba(57,255,20,0.3)">Lanjut ke Part 5 →</a>'
   }}
 ];
 
@@ -65,12 +65,12 @@ function renderCategoryHeader(s) {
     '<h2 style="font-size:clamp(1.5rem,5vw,3.5rem);font-weight:900;margin-bottom:16px;line-height:1.2;text-align:center">' +
       '<span style="color:' + clr.border + '">' + c.num + '.</span> ' + c.name +
     '</h2>' +
-    '<p style="color:#8E9AA6;font-size:clamp(0.8rem,2vw,1rem);max-width:500px;text-align:center;margin-bottom:32px">' + c.desc + '</p>' +
+    '<p style="color:var(--text-dim);font-size:clamp(0.8rem,2vw,1rem);max-width:500px;text-align:center;margin-bottom:32px">' + c.desc + '</p>' +
     '<div style="display:inline-flex;align-items:center;gap:12px;padding:12px 20px;border-radius:12px;background:' + clr.border + '10;border:1px solid ' + clr.border + '15">' +
       '<span style="font-size:clamp(1.2rem,3vw,1.5rem);font-weight:900;font-family:\'JetBrains Mono\',monospace;color:' + clr.border + '">' + c.count + '</span>' +
-      '<span style="color:#8E9AA6;font-size:clamp(0.7rem,1.5vw,0.85rem)">istilah dalam kategori ini</span>' +
+      '<span style="color:var(--text-dim);font-size:clamp(0.7rem,1.5vw,0.85rem)">istilah dalam kategori ini</span>' +
     '</div>' +
-    '<div style="margin-top:40px;display:flex;align-items:center;gap:8px;color:#8E9AA6;font-size:12px">' +
+    '<div style="margin-top:40px;display:flex;align-items:center;gap:8px;color:var(--text-dim);font-size:12px">' +
       '<span style="animation:pulseGlow 2s ease-in-out infinite;color:' + clr.border + '">▼</span>' +
       '<span>Next untuk mulai</span>' +
     '</div>' +
@@ -94,13 +94,13 @@ function renderTerm(s) {
     extras.slice(0, 2).forEach(function(sec) {
       extrasHtml += '<div style="border-radius:12px;padding:14px;border:1px solid ' + clr.border + '10;background:' + clr.bg + '">' +
         '<span style="font-size:11px;font-family:\'JetBrains Mono\',monospace;letter-spacing:1px;display:block;margin-bottom:6px;color:' + clr.border + '">' + sec.label + '</span>' +
-        '<p class="term-body" style="color:#8E9AA6;font-size:13px;line-height:1.7">' + sec.text + '</p>' +
+        '<p class="term-body" style="color:var(--text-dim);font-size:13px;line-height:1.7">' + sec.text + '</p>' +
       '</div>';
     });
     if (extras.length > 2) {
       extrasHtml += '<div style="border-radius:12px;padding:14px;border:1px solid ' + clr.border + '10;background:' + clr.bg + ';grid-column:1/-1">' +
         '<span style="font-size:11px;font-family:\'JetBrains Mono\',monospace;letter-spacing:1px;display:block;margin-bottom:6px;color:' + clr.border + '">' + extras[2].label + '</span>' +
-        '<p class="term-body" style="color:#8E9AA6;font-size:13px;line-height:1.7">' + extras[2].text + '</p>' +
+        '<p class="term-body" style="color:var(--text-dim);font-size:13px;line-height:1.7">' + extras[2].text + '</p>' +
       '</div>';
     }
     extrasHtml += '</div>';
@@ -109,14 +109,14 @@ function renderTerm(s) {
   return '<div class="slide-enter" style="height:100%;display:flex;flex-direction:column;justify-content:center;max-width:1000px;margin:0 auto;width:100%;padding:8px 0;overflow-y:auto;">' +
     '<div style="display:flex;align-items:center;gap:10px;margin-bottom:14px;flex-shrink:0">' +
       '<span class="num-badge" style="background:' + clr.badge + ';color:' + clr.text + ';border:1px solid ' + clr.border + '30">' + numStr + '</span>' +
-      '<span style="color:#8E9AA6;font-size:11px;font-family:\'JetBrains Mono\',monospace;letter-spacing:1px;text-transform:uppercase">' + c.category + '</span>' +
+      '<span style="color:var(--text-dim);font-size:11px;font-family:\'JetBrains Mono\',monospace;letter-spacing:1px;text-transform:uppercase">' + c.category + '</span>' +
       '<span style="color:rgba(142,154,166,0.3);font-size:11px">|</span>' +
-      '<span style="color:#8E9AA6;font-size:11px;font-family:\'JetBrains Mono\',monospace">' + c.title + '</span>' +
+      '<span style="color:var(--text-dim);font-size:11px;font-family:\'JetBrains Mono\',monospace">' + c.title + '</span>' +
     '</div>' +
     '<h3 class="term-title" style="font-size:clamp(1.2rem,3vw,2rem);font-weight:900;margin-bottom:16px;line-height:1.3;flex-shrink:0">' + c.title + '</h3>' +
     '<div style="border-radius:12px;padding:14px 16px;border:1px solid ' + clr.border + '15;background:' + clr.bg + ';margin-bottom:12px;flex-shrink:0">' +
       '<span style="font-size:11px;font-family:\'JetBrains Mono\',monospace;letter-spacing:1px;display:block;margin-bottom:6px;color:' + clr.border + '">📖 Definisi</span>' +
-      '<p class="term-body" style="color:#8E9AA6;font-size:clamp(0.75rem,1.8vw,0.9rem);line-height:1.7">' + c.def + '</p>' +
+      '<p class="term-body" style="color:var(--text-dim);font-size:clamp(0.75rem,1.8vw,0.9rem);line-height:1.7">' + c.def + '</p>' +
     '</div>' +
     extrasHtml +
   '</div>';
@@ -130,26 +130,26 @@ function renderClosing(s) {
     '<div class="corner-accent corner-bl" style="border-color:rgba(176,38,255,0.2)"></div>' +
     '<div class="corner-accent corner-br" style="border-color:rgba(57,255,20,0.2)"></div>' +
     '<div style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:999px;border:1px solid rgba(57,255,20,0.2);background:rgba(57,255,20,0.05);margin-bottom:32px">' +
-      '<span style="width:6px;height:6px;border-radius:50%;background:#39FF14;animation:pulseGlow 2s ease-in-out infinite"></span>' +
-      '<span style="color:#39FF14;font-size:11px;font-family:\'JetBrains Mono\',monospace;letter-spacing:2px">Closing</span>' +
+      '<span style="width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulseGlow 2s ease-in-out infinite"></span>' +
+      '<span style="color:var(--green);font-size:11px;font-family:\'JetBrains Mono\',monospace;letter-spacing:2px">Closing</span>' +
     '</div>' +
     '<h2 style="font-size:clamp(1.5rem,4vw,3rem);font-weight:900;margin-bottom:16px;line-height:1.2">' + c.title + '</h2>' +
-    '<p style="color:#8E9AA6;font-size:clamp(0.8rem,2vw,1rem);margin-bottom:32px">' + c.message + '</p>' +
+    '<p style="color:var(--text-dim);font-size:clamp(0.8rem,2vw,1rem);margin-bottom:32px">' + c.message + '</p>' +
     '<div style="width:100%;max-width:500px;display:flex;flex-direction:column;gap:10px;margin-bottom:32px">' +
       (function(){ var h = ''; c.steps.forEach(function(s, i){
-        var colors = ['#39FF14','#00E5FF'];
+        var colors = ['var(--green)','var(--cyan)'];
         var bgs = ['rgba(57,255,20,0.1)','rgba(0,229,255,0.1)'];
-        h += '<a href="' + s.link + '" style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;border:1px solid #1A1F2E;background:#0A0E17;text-decoration:none;transition:all 0.3s;cursor:pointer" class="card-hover">' +
+        h += '<a href="' + s.link + '" style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:12px;border:1px solid var(--surface-border);background:var(--surface);text-decoration:none;transition:all 0.3s;cursor:pointer" class="card-hover">' +
           '<span style="width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;font-family:\'JetBrains Mono\',monospace;background:' + bgs[i] + ';color:' + colors[i] + '">' + s.step + '</span>' +
           '<div style="text-align:left;flex:1">' +
             '<h4 style="color:#FFFFFF;font-weight:600;font-size:14px">' + s.title + '</h4>' +
-            '<p style="color:#8E9AA6;font-size:12px">' + s.detail + '</p>' +
+            '<p style="color:var(--text-dim);font-size:12px">' + s.detail + '</p>' +
           '</div>' +
           '<span style="color:rgba(142,154,166,0.3)">→</span>' +
         '</a>';
       }); return h; })() +
     '</div>' +
-    '<p style="color:#8E9AA6;font-size:clamp(0.7rem,1.5vw,0.85rem);max-width:400px;margin-bottom:20px">' + c.closing + '</p>' +
+    '<p style="color:var(--text-dim);font-size:clamp(0.7rem,1.5vw,0.85rem);max-width:400px;margin-bottom:20px">' + c.closing + '</p>' +
     '<div style="font-size:clamp(1.2rem,3vw,1.8rem);font-weight:900">' + c.tagline + '</div>' +
   '</div>';
 }
@@ -230,7 +230,7 @@ function renderCurrent() {
 function createParticles() {
   var p = document.getElementById('particles');
   if (!p) return;
-  var colors = ['#39FF14', '#00E5FF', '#B026FF'];
+  var colors = ['var(--green)', 'var(--cyan)', 'var(--purple)'];
   for (var i = 0; i < 35; i++) {
     var el = document.createElement('div');
     el.className = 'particle';
@@ -249,9 +249,9 @@ function createParticles() {
 
 function createOrbs() {
   var orbs = [
-    { color: '#39FF14', top: '10%', left: '5%', width: '300px', height: '300px', delay: '0s' },
-    { color: '#00E5FF', top: '60%', left: '70%', width: '250px', height: '250px', delay: '-7s' },
-    { color: '#B026FF', top: '30%', left: '80%', width: '200px', height: '200px', delay: '-14s' },
+    { color: 'var(--green)', top: '10%', left: '5%', width: '300px', height: '300px', delay: '0s' },
+    { color: 'var(--cyan)', top: '60%', left: '70%', width: '250px', height: '250px', delay: '-7s' },
+    { color: 'var(--purple)', top: '30%', left: '80%', width: '200px', height: '200px', delay: '-14s' },
   ];
   orbs.forEach(function(o) {
     var el = document.createElement('div');
