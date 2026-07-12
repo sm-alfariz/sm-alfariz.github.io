@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>30 Istilah Vibe Coding — Cyberpunk Interactive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Orbitron:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+@font-face{font-family:'JetBrains Mono Nerd';font-style:normal;font-weight:700;font-display:swap;src:url(https://cdn.jsdelivr.net/gh/Nick2bad4u/nerd-fonts-woff2@v1.0.4/fonts/woff2/JetBrainsMono/JetBrainsMonoNerdFont-Bold.woff2)format('woff2')}
+:root{--bg:#000000;--card:#0A0E17;--card-border:#1A1F2E;--text:#FFFFFF;--text-dim:#8E9AA6;--green:#39FF14;--cyan:#00E5FF;--purple:#B026FF}
+*{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);
+  overflow-x:hidden;min-height:100vh;-webkit-font-smoothing:antialiased
+}
+.scanlines{
+  position:fixed;inset:0;pointer-events:none;z-index:9999;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);
+  animation:scanlineMove .5s linear infinite
+}
+.bg-grid{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background-image:linear-gradient(rgba(57,255,20,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(57,255,20,.04) 1px,transparent 1px);
+  background-size:40px 40px
+}
+.orb{
+  position:fixed;border-radius:50%;pointer-events:none;z-index:0;
+  filter:blur(80px);opacity:0.12;
+  animation:orbFloat 25s infinite ease-in-out
+}
+.particle{
+  position:fixed;border-radius:50%;pointer-events:none;z-index:0;opacity:0
+}
+@keyframes scanlineMove{0%{transform:translateY(-100%)}100%{transform:translateY(100vh)}}
+@keyframes orbFloat{
+  0%,100%{transform:translate(0,0)scale(1)}
+  25%{transform:translate(40px,-30px)scale(1.1)}
+  50%{transform:translate(-30px,40px)scale(.9)}
+  75%{transform:translate(30px,30px)scale(1.05)}
+}
+@keyframes float{
+  0%{transform:translateY(0)translateX(0);opacity:0}
+  10%{opacity:1}
+  90%{opacity:1}
+  100%{transform:translateY(-100vh)translateX(100px);opacity:0}
+}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+@keyframes pulseGlow{0%,100%{box-shadow:0 0 8px rgba(57,255,20,.2)}50%{box-shadow:0 0 20px rgba(57,255,20,.5),0 0 40px rgba(57,255,20,.2)}}
+@keyframes pulseGlowCyan{0%,100%{box-shadow:0 0 8px rgba(0,229,255,.2)}50%{box-shadow:0 0 20px rgba(0,229,255,.5),0 0 40px rgba(0,229,255,.2)}}
+@keyframes rotateGlow{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:rgba(57,255,20,.3);border-radius:2px}
+::-webkit-scrollbar-thumb:hover{background:rgba(57,255,20,.5)}
+</style>
+</head>
+<body>
+<div class="scanlines"></div>
+<div class="bg-grid"></div>
+<div id="particles"></div>
+<div id="orbs"></div>
+
+<div id="app" style="position:relative;z-index:10;min-height:100vh;display:flex;flex-direction:column">
+  <header style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid rgba(26,31,46,.6);background:rgba(0,0,0,.5);backdrop-filter:blur(10px);position:sticky;top:0;z-index:50">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="width:36px;height:36px;border-radius:8px;border:1px solid rgba(57,255,20,.3);display:flex;align-items:center;justify-content:center;box-shadow:0 0 10px rgba(57,255,20,.15)">
+        <span style="color:var(--green);font-size:13px;font-weight:700;font-family:'JetBrains Mono',monospace">&lt;/&gt;</span>
+      </div>
+      <div>
+        <h1 style="color:var(--text);font-family:'JetBrains Mono Nerd','JetBrains Mono',monospace;font-size:13px;letter-spacing:2px;text-transform:uppercase;font-weight:700">Vibe Coding <span style="color:var(--green)">Glossary</span></h1>
+        <div style="color:var(--text-dim);font-size:10px;font-family:'JetBrains Mono',monospace;letter-spacing:1px">30 Istilah Penting</div>
+      </div>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <div style="width:10px;height:10px;border-radius:50%;background:var(--green);animation:pulseGlow 2s ease-in-out infinite"></div>
+      <span style="color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">CYBERPUNK MODE</span>
+    </div>
+  </header>
+
+  <main style="flex:1;padding:40px 20px 60px;max-width:1200px;margin:0 auto;width:100%">
+    <!-- Hero -->
+    <section style="text-align:center;margin-bottom:60px">
+      <div style="display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:100px;border:1px solid rgba(57,255,20,.2);background:rgba(57,255,20,.05);margin-bottom:24px">
+        <div style="width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulseGlow 2s ease-in-out infinite"></div>
+        <span style="color:var(--green);font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase">Interactive Presentation</span>
+      </div>
+      <h2 style="font-size:clamp(28px,6vw,64px);font-weight:700;font-family:'JetBrains Mono Nerd','JetBrains Mono',monospace;line-height:1.1;margin-bottom:16px;letter-spacing:-1px">30 GLOSSARIUM <span style="color:var(--green)">VIBE CODING</span></h2>
+      <p style="color:var(--text-dim);font-size:clamp(14px,2vw,18px);max-width:600px;margin:0 auto 32px;line-height:1.7">Kamus Lengkap Istilah Vibe Coding dari A-Z untuk Pemula hingga Advanced — 30 istilah dalam 5 kategori</p>
+      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-bottom:40px">
+        <span style="padding:8px 18px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:rgba(57,255,20,.08);color:var(--green);border:1px solid rgba(57,255,20,.15);display:flex;align-items:center;gap:6px">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--green)"></span>Fundamental
+        </span>
+        <span style="padding:8px 18px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:rgba(0,229,255,.08);color:var(--cyan);border:1px solid rgba(0,229,255,.15);display:flex;align-items:center;gap:6px">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--cyan)"></span>Prompting
+        </span>
+        <span style="padding:8px 18px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:rgba(176,38,255,.08);color:var(--purple);border:1px solid rgba(176,38,255,.15);display:flex;align-items:center;gap:6px">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--purple)"></span>Tools
+        </span>
+        <span style="padding:8px 18px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:rgba(57,255,20,.08);color:var(--green);border:1px solid rgba(57,255,20,.15);display:flex;align-items:center;gap:6px">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--green)"></span>Workflow
+        </span>
+        <span style="padding:8px 18px;border-radius:8px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;letter-spacing:1px;text-transform:uppercase;background:rgba(0,229,255,.08);color:var(--cyan);border:1px solid rgba(0,229,255,.15);display:flex;align-items:center;gap:6px">
+          <span style="width:6px;height:6px;border-radius:50%;background:var(--cyan)"></span>Quality
+        </span>
+      </div>
+      <a href="part-1.html" style="display:inline-flex;align-items:center;gap:10px;padding:14px 32px;border-radius:12px;background:linear-gradient(135deg,rgba(57,255,20,.15),rgba(0,229,255,.1));border:1px solid rgba(57,255,20,.3);color:var(--text);font-weight:600;font-size:15px;text-decoration:none;transition:all .3s;box-shadow:0 0 20px rgba(57,255,20,.1)" onmouseenter="this.style.transform='translateY(-2px)';this.style.boxShadow='0 0 30px rgba(57,255,20,.2)'" onmouseleave="this.style.transform='';this.style.boxShadow='0 0 20px rgba(57,255,20,.1)'">
+        Mulai Belajar <span style="font-size:18px">→</span>
+      </a>
+    </section>
+
+    <!-- Stats -->
+    <section style="display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:60px">
+      <div style="background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:20px;text-align:center">
+        <div style="font-size:36px;font-weight:900;font-family:'JetBrains Mono',monospace;color:var(--green);margin-bottom:4px">30</div>
+        <div style="color:var(--text-dim);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase">Istilah</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:20px;text-align:center">
+        <div style="font-size:36px;font-weight:900;font-family:'JetBrains Mono',monospace;color:var(--cyan);margin-bottom:4px">5</div>
+        <div style="color:var(--text-dim);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase">Kategori</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:20px;text-align:center">
+        <div style="font-size:36px;font-weight:900;font-family:'JetBrains Mono',monospace;color:var(--purple);margin-bottom:4px">8</div>
+        <div style="color:var(--text-dim);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase">Fundamental</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:20px;text-align:center">
+        <div style="font-size:36px;font-weight:900;font-family:'JetBrains Mono',monospace;color:var(--green);margin-bottom:4px">7</div>
+        <div style="color:var(--text-dim);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase">Prompting</div>
+      </div>
+      <div style="background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:20px;text-align:center">
+        <div style="font-size:36px;font-weight:900;font-family:'JetBrains Mono',monospace;color:var(--cyan);margin-bottom:4px">6</div>
+        <div style="color:var(--text-dim);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:1px;text-transform:uppercase">Tools</div>
+      </div>
+    </section>
+
+    <!-- Part Cards -->
+    <h3 style="font-size:clamp(20px,3vw,32px);font-weight:900;margin-bottom:24px;text-align:center">Pilih <span style="color:var(--green)">Kategori</span></h3>
+    <p style="color:var(--text-dim);text-align:center;margin-bottom:36px;font-size:14px;max-width:500px;margin-left:auto;margin-right:auto">Setiap kategori berisi slide interaktif dengan definisi, analogi, tips, dan contoh praktis</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px">
+      <!-- Part 1 -->
+      <a href="part-1.html" style="display:block;background:var(--card);border:1px solid rgba(57,255,20,.2);border-radius:16px;padding:28px 24px;text-decoration:none;transition:all .4s;position:relative;overflow:hidden" onmouseenter="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(57,255,20,.4)';this.style.boxShadow='0 0 30px rgba(57,255,20,.15)'" onmouseleave="this.style.transform='';this.style.borderColor='rgba(57,255,20,.2)';this.style.boxShadow=''">
+        <div style="position:absolute;top:0;right:0;width:120px;height:120px;border-radius:0 16px 0 100px;background:rgba(57,255,20,.05);pointer-events:none"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:rgba(57,255,20,.1);color:var(--green);border:1px solid rgba(57,255,20,.25);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700">01</span>
+          <span style="color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">8 ISTILAH</span>
+        </div>
+        <h4 style="color:var(--text);font-size:18px;font-weight:700;margin-bottom:8px">Fundamental <span style="color:var(--green)">Vibe Coding</span></h4>
+        <p style="color:var(--text-dim);font-size:13px;line-height:1.6;margin-bottom:16px">Dasar-dasar yang harus semua orang kuasai — istilah yang akan kamu temui di setiap diskusi tentang vibe coding.</p>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--green);font-weight:500">
+          Mulai <span style="transition:transform .3s">→</span>
+        </div>
+      </a>
+
+      <!-- Part 2 -->
+      <a href="part-2.html" style="display:block;background:var(--card);border:1px solid rgba(0,229,255,.2);border-radius:16px;padding:28px 24px;text-decoration:none;transition:all .4s;position:relative;overflow:hidden" onmouseenter="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(0,229,255,.4)';this.style.boxShadow='0 0 30px rgba(0,229,255,.15)'" onmouseleave="this.style.transform='';this.style.borderColor='rgba(0,229,255,.2)';this.style.boxShadow=''">
+        <div style="position:absolute;top:0;right:0;width:120px;height:120px;border-radius:0 16px 0 100px;background:rgba(0,229,255,.05);pointer-events:none"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:rgba(0,229,255,.1);color:var(--cyan);border:1px solid rgba(0,229,255,.25);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700">02</span>
+          <span style="color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">7 ISTILAH</span>
+        </div>
+        <h4 style="color:var(--text);font-size:18px;font-weight:700;margin-bottom:8px">Prompting & <span style="color:var(--cyan)">Communication</span></h4>
+        <p style="color:var(--text-dim);font-size:13px;line-height:1.6;margin-bottom:16px">Cara berkomunikasi dengan AI untuk mendapatkan hasil terbaik — skill yang membedakan beginner dari advanced vibe coder.</p>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--cyan);font-weight:500">
+          Mulai <span style="transition:transform .3s">→</span>
+        </div>
+      </a>
+
+      <!-- Part 3 -->
+      <a href="part-3.html" style="display:block;background:var(--card);border:1px solid rgba(176,38,255,.2);border-radius:16px;padding:28px 24px;text-decoration:none;transition:all .4s;position:relative;overflow:hidden" onmouseenter="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(176,38,255,.4)';this.style.boxShadow='0 0 30px rgba(176,38,255,.15)'" onmouseleave="this.style.transform='';this.style.borderColor='rgba(176,38,255,.2)';this.style.boxShadow=''">
+        <div style="position:absolute;top:0;right:0;width:120px;height:120px;border-radius:0 16px 0 100px;background:rgba(176,38,255,.05);pointer-events:none"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:rgba(176,38,255,.1);color:var(--purple);border:1px solid rgba(176,38,255,.25);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700">03</span>
+          <span style="color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">6 ISTILAH</span>
+        </div>
+        <h4 style="color:var(--text);font-size:18px;font-weight:700;margin-bottom:8px">Tools & <span style="color:var(--purple)">Environment</span></h4>
+        <p style="color:var(--text-dim);font-size:13px;line-height:1.6;margin-bottom:16px">Alat-alat yang digunakan dalam ekosistem vibe coding — dari Cursor, Copilot, Claude Code, hingga Bolt.new.</p>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--purple);font-weight:500">
+          Mulai <span style="transition:transform .3s">→</span>
+        </div>
+      </a>
+
+      <!-- Part 4 -->
+      <a href="part-4.html" style="display:block;background:var(--card);border:1px solid rgba(57,255,20,.2);border-radius:16px;padding:28px 24px;text-decoration:none;transition:all .4s;position:relative;overflow:hidden" onmouseenter="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(57,255,20,.4)';this.style.boxShadow='0 0 30px rgba(57,255,20,.15)'" onmouseleave="this.style.transform='';this.style.borderColor='rgba(57,255,20,.2)';this.style.boxShadow=''">
+        <div style="position:absolute;top:0;right:0;width:120px;height:120px;border-radius:0 16px 0 100px;background:rgba(57,255,20,.05);pointer-events:none"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:rgba(57,255,20,.1);color:var(--green);border:1px solid rgba(57,255,20,.25);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700">04</span>
+          <span style="color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">5 ISTILAH</span>
+        </div>
+        <h4 style="color:var(--text);font-size:18px;font-weight:700;margin-bottom:8px">Workflow & <span style="color:var(--green)">Techniques</span></h4>
+        <p style="color:var(--text-dim);font-size:13px;line-height:1.6;margin-bottom:16px">Cara kerja dan teknik dalam vibe coding — scaffolding, refactoring, inline completion, chat-based coding, dan agentic coding.</p>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--green);font-weight:500">
+          Mulai <span style="transition:transform .3s">→</span>
+        </div>
+      </a>
+
+      <!-- Part 5 -->
+      <a href="part-5.html" style="display:block;background:var(--card);border:1px solid rgba(0,229,255,.2);border-radius:16px;padding:28px 24px;text-decoration:none;transition:all .4s;position:relative;overflow:hidden" onmouseenter="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(0,229,255,.4)';this.style.boxShadow='0 0 30px rgba(0,229,255,.15)'" onmouseleave="this.style.transform='';this.style.borderColor='rgba(0,229,255,.2)';this.style.boxShadow=''">
+        <div style="position:absolute;top:0;right:0;width:120px;height:120px;border-radius:0 16px 0 100px;background:rgba(0,229,255,.05);pointer-events:none"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:rgba(0,229,255,.1);color:var(--cyan);border:1px solid rgba(0,229,255,.25);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700">05</span>
+          <span style="color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">4 ISTILAH</span>
+        </div>
+        <h4 style="color:var(--text);font-size:18px;font-weight:700;margin-bottom:8px">Quality & <span style="color:var(--cyan)">Best Practices</span></h4>
+        <p style="color:var(--text-dim);font-size:13px;line-height:1.6;margin-bottom:16px">Menjaga kualitas dalam vibe coding — code review, hallucination, grounding, dan human-in-the-loop.</p>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--cyan);font-weight:500">
+          Mulai <span style="transition:transform .3s">→</span>
+        </div>
+      </a>
+
+      <!-- Part 6 -->
+      <a href="part-6.html" style="display:block;background:var(--card);border:1px solid rgba(176,38,255,.2);border-radius:16px;padding:28px 24px;text-decoration:none;transition:all .4s;position:relative;overflow:hidden" onmouseenter="this.style.transform='translateY(-6px)';this.style.borderColor='rgba(176,38,255,.4)';this.style.boxShadow='0 0 30px rgba(176,38,255,.15)'" onmouseleave="this.style.transform='';this.style.borderColor='rgba(176,38,255,.2)';this.style.boxShadow=''">
+        <div style="position:absolute;top:0;right:0;width:120px;height:120px;border-radius:0 16px 0 100px;background:rgba(176,38,255,.05);pointer-events:none"></div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <span style="display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:8px;background:rgba(176,38,255,.1);color:var(--purple);border:1px solid rgba(176,38,255,.25);font-family:'JetBrains Mono',monospace;font-size:14px;font-weight:700">06</span>
+          <span style="color:var(--text-dim);font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1px">4 MINGGU</span>
+        </div>
+        <h4 style="color:var(--text);font-size:18px;font-weight:700;margin-bottom:8px">Learning <span style="color:var(--purple)">Journey</span></h4>
+        <p style="color:var(--text-dim);font-size:13px;line-height:1.6;margin-bottom:16px">Rekomendasi alur belajar 4 minggu untuk menguasai vibe coding — dari fundamental hingga workflow dan best practices.</p>
+        <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--purple);font-weight:500">
+          Mulai <span style="transition:transform .3s">→</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Journey Map -->
+    <section style="margin-top:80px;text-align:center">
+      <h3 style="font-size:clamp(20px,3vw,32px);font-weight:900;margin-bottom:8px">Learning <span style="color:var(--cyan)">Journey</span></h3>
+      <p style="color:var(--text-dim);font-size:14px;margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto">Rekomendasi alur belajar 4 minggu untuk menguasai vibe coding</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;max-width:900px;margin:0 auto">
+        <div style="background:rgba(57,255,20,.05);border:1px solid rgba(57,255,20,.15);border-radius:12px;padding:18px 16px">
+          <span style="color:var(--green);font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:900;display:block;margin-bottom:4px">1</span>
+          <span style="color:var(--text);font-weight:600;font-size:13px;display:block;margin-bottom:4px">Fundamental</span>
+          <span style="color:var(--text-dim);font-size:11px">Minggu 1: Kuasai 8 istilah dasar</span>
+        </div>
+        <div style="background:rgba(0,229,255,.05);border:1px solid rgba(0,229,255,.15);border-radius:12px;padding:18px 16px">
+          <span style="color:var(--cyan);font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:900;display:block;margin-bottom:4px">2</span>
+          <span style="color:var(--text);font-weight:600;font-size:13px;display:block;margin-bottom:4px">Prompting</span>
+          <span style="color:var(--text-dim);font-size:11px">Minggu 2: Pelajari teknik prompting</span>
+        </div>
+        <div style="background:rgba(176,38,255,.05);border:1px solid rgba(176,38,255,.15);border-radius:12px;padding:18px 16px">
+          <span style="color:var(--purple);font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:900;display:block;margin-bottom:4px">3</span>
+          <span style="color:var(--text);font-weight:600;font-size:13px;display:block;margin-bottom:4px">Tools</span>
+          <span style="color:var(--text-dim);font-size:11px">Minggu 3: Fokus 1 tool (Cursor)</span>
+        </div>
+        <div style="background:rgba(57,255,20,.05);border:1px solid rgba(57,255,20,.15);border-radius:12px;padding:18px 16px">
+          <span style="color:var(--green);font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:900;display:block;margin-bottom:4px">4</span>
+          <span style="color:var(--text);font-weight:600;font-size:13px;display:block;margin-bottom:4px">Workflow</span>
+          <span style="color:var(--text-dim);font-size:11px">Minggu 4: Workflow & quality</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer style="border-top:1px solid rgba(26,31,46,.6);padding:20px;text-align:center">
+    <div style="color:var(--text-dim);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:1px">
+      Powered by <span style="color:var(--green)">Cyberpunk</span> <span style="color:rgba(142,154,166,.3)">•</span> <span style="color:var(--cyan)">Vibe Coding</span> <span style="color:rgba(142,154,166,.3)">•</span> 30 Glossarium Istilah
+    </div>
+  </footer>
+</div>
+
+<script>
+(function(){
+  // Particles
+  var p=document.getElementById('particles');
+  if(p) for(var i=0;i<40;i++){
+    var el=document.createElement('div');
+    el.className='particle';
+    el.style.left=Math.random()*100+'%';
+    el.style.top=Math.random()*100+'%';
+    el.style.animation='float '+(8+Math.random()*12)+'s '+(Math.random()*10)+'s infinite';
+    el.style.width=(1+Math.random()*2)+'px';
+    el.style.height=el.style.width;
+    el.style.background=['#39FF14','#00E5FF','#B026FF'][Math.floor(Math.random()*3)];
+    p.appendChild(el);
+  }
+  // Orbs
+  var o=document.getElementById('orbs');
+  if(o) for(var i=0;i<3;i++){
+    var orb=document.createElement('div');
+    orb.className='orb';
+    orb.style.top=Math.random()*80+'%';
+    orb.style.left=Math.random()*80+'%';
+    orb.style.width=(200+Math.random()*400)+'px';
+    orb.style.height=(200+Math.random()*400)+'px';
+    orb.style.animationDelay=(Math.random()*10)+'s';
+    orb.style.background=['radial-gradient(circle,rgba(57,255,20,.12),transparent 70%)','radial-gradient(circle,rgba(0,229,255,.12),transparent 70%)','radial-gradient(circle,rgba(176,38,255,.12),transparent 70%)'][i];
+    o.appendChild(orb);
+  }
+})();
+</script>
+</body>
+</html>

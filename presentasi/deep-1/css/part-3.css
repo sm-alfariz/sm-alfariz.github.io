@@ -1,0 +1,5 @@
+@media(min-width:640px){
+  .part-label{display:block!important}
+  .nav-label-prev{display:inline!important}
+  .nav-label-next{display:inline!important}
+}

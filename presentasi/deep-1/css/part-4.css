@@ -1,0 +1,9 @@
+.glow-green{box-shadow:0 0 15px rgba(57,255,20,.15),0 0 30px rgba(57,255,20,.05)}
+.glow-cyan{box-shadow:0 0 15px rgba(0,229,255,.15),0 0 30px rgba(0,229,255,.05)}
+.glow-purple{box-shadow:0 0 15px rgba(176,38,255,.15),0 0 30px rgba(176,38,255,.05)}
+.text-glow-green{text-shadow:0 0 10px rgba(57,255,20,.5),0 0 20px rgba(57,255,20,.2)}
+.text-glow-cyan{text-shadow:0 0 10px rgba(0,229,255,.5),0 0 20px rgba(0,229,255,.2)}
+.text-glow-purple{text-shadow:0 0 10px rgba(176,38,255,.5),0 0 20px rgba(176,38,255,.2)}
+#prevBtn,#nextBtn{animation:navGlowGreen 3s ease-in-out infinite}
+@keyframes navGlowGreen{0%,100%{box-shadow:0 0 8px rgba(57,255,20,.2),0 0 16px rgba(57,255,20,.1)}50%{box-shadow:0 0 16px rgba(57,255,20,.4),0 0 32px rgba(57,255,20,.2)}}
+@media(max-width:768px){.term-title{font-size:1.125rem!important}.term-body{font-size:0.8rem!important}}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 2 — Prompting & Communication</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/part-2.css">
+</head>
+<body>
+<div class="scanlines"></div>
+<div class="bg-grid"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+<div id="particles"></div>
+<div id="progressBar" class="progress-bar" style="width:0%"></div>
+
+<div id="app">
+  <header>
+    <div class="logo-wrap">
+      <a href="index.html" class="logo-box"><span>&lt;/&gt;</span></a>
+      <span class="part-label">Part 2 · Prompting</span>
+    </div>
+    <div class="header-right">
+      <a href="index.html" class="landing-link">← Landing</a>
+      <span class="slide-label" id="slideLabel">01 / 09</span>
+    </div>
+  </header>
+  <main id="slideContainer"></main>
+  <footer>
+    <button id="prevBtn" class="nav-btn"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg><span>Previous</span></button>
+    <div id="dotContainer"></div>
+    <button id="nextBtn" class="nav-btn"><span>Next</span><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg></button>
+  </footer>
+  <div class="slide-counter"><span id="slideCounter">01</span> / <span id="totalSlides">09</span></div>
+</div>
+
+<script src="js/part-2.js"></script>
+</body>
+</html>

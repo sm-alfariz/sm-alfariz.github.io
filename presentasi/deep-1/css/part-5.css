@@ -1,0 +1,19 @@
+.orb-1{width:400px;height:400px;top:-10%;left:-5%;background:radial-gradient(circle,#39FF14,transparent 70%);animation-delay:0s}
+.orb-2{width:350px;height:350px;bottom:-15%;right:-5%;background:radial-gradient(circle,#00E5FF,transparent 70%);animation-delay:-7s}
+.orb-3{width:300px;height:300px;top:40%;left:50%;background:radial-gradient(circle,#B026FF,transparent 70%);animation-delay:-14s}
+
+.scroll-content{height:100%;overflow-y:auto;padding-right:8px}
+.scroll-content::-webkit-scrollbar{width:4px}
+.scroll-content::-webkit-scrollbar-track{background:transparent}
+.scroll-content::-webkit-scrollbar-thumb{background:rgba(0,229,255,0.3);border-radius:2px}
+.scroll-content::-webkit-scrollbar-thumb:hover{background:rgba(0,229,255,0.5)}
+
+.btn-glow{display:inline-flex;align-items:center;gap:8px;padding:14px 32px;border-radius:8px;font-family:'Inter',sans-serif;font-weight:600;font-size:14px;border:none;cursor:pointer;text-decoration:none;transition:all .3s cubic-bezier(.16,1,.3,1)}
+.btn-glow:hover{transform:translateY(-2px)}
+
+.glitch-text{position:relative}
+.glitch-text::before,.glitch-text::after{content:attr(data-text);position:absolute;top:0;left:0;width:100%;height:100%;opacity:0}
+.glitch-text::before{color:#39FF14;animation:glitchShift 3s infinite;clip-path:inset(20% 0 60% 0)}
+.glitch-text::after{color:#00E5FF;animation:glitchShift 2.5s infinite reverse;clip-path:inset(60% 0 20% 0)}
+
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}

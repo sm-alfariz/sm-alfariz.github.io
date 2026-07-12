@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Part 1 — Fundamental Vibe Coding</title>
+<link rel="stylesheet" href="css/common.css">
+<link rel="stylesheet" href="css/part-1.css">
+</head>
+<body>
+<div class="scanlines"></div>
+<div class="bg-grid"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+<div id="particles"></div>
+<div id="progressBar" class="progress-bar" style="width:0%"></div>
+
+<div id="app">
+  <header>
+    <div class="header-left">
+      <a href="index.html" class="logo-box"><span>&lt;/&gt;</span></a>
+      <span class="part-label">Part 1 · Fundamental</span>
+    </div>
+    <div class="header-right">
+      <a href="index.html" class="landing-link">&larr; Landing</a>
+      <span class="slide-label" id="slideLabel">01 / 10</span>
+    </div>
+  </header>
+  <main id="slideContainer"></main>
+  <footer>
+    <button id="prevBtn" class="nav-btn">
+      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+      <span class="btn-label">Previous</span>
+    </button>
+    <div id="dotContainer"></div>
+    <button id="nextBtn" class="nav-btn">
+      <span class="btn-label">Next</span>
+      <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+    </button>
+  </footer>
+  <div class="slide-counter"><span id="slideCounter">01</span> / <span id="totalSlides">10</span></div>
+</div>
+
+<script src="js/part-1.js"></script>
+</body>
+</html>
